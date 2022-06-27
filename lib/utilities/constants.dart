@@ -5,6 +5,7 @@ const appName = 'Ego';
 
 final dateFormat = DateFormat("MMM, E d, yy.");
 final numberFormat = NumberFormat("#,##0.00", "en_US");
+final compactFromat = NumberFormat.compact();
 
 const kPrimaryColor = Color(0xFF302D43);
 const kSecondaryColor = Color(0xFF6953F7);

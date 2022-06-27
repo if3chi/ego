@@ -3,16 +3,16 @@ import 'package:ego/utilities/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NeuSummaryCard extends StatelessWidget {
+  final double total;
   final String textType;
-  final int percentage;
-  final double arrowDirection;
   final bool isPositive;
+  final double percentage;
 
   const NeuSummaryCard({
     Key? key,
     required this.textType,
     required this.percentage,
-    required this.arrowDirection,
+    required this.total,
     this.isPositive = true,
   }) : super(key: key);
 
@@ -23,16 +23,16 @@ class NeuSummaryCard extends StatelessWidget {
     final cardIcon = isPositive
         ? SvgPicture.asset(
             "assets/images/up_arrow.svg",
+            width: 14,
             color: foreColor,
             semanticsLabel: 'An up arrow',
           )
         : SvgPicture.asset(
             "assets/images/down_arrow.svg",
+            width: 14,
             color: foreColor,
             semanticsLabel: 'A down arrow',
           );
-
-    double getPercentage(double percentage) => (percentage / 100) * 180;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -49,37 +49,47 @@ class NeuSummaryCard extends StatelessWidget {
         boxShadow: kBoxShadow,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          RotationTransition(
-            // ignore: todo
-            // TODO: Add dynamic icon rotation based on transaction %tage.
-            turns: AlwaysStoppedAnimation(getPercentage(arrowDirection) / 180),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: bgColor,
-                shape: BoxShape.circle,
-              ),
-              child: cardIcon,
-            ),
-          ),
-          const SizedBox(width: 6.0),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              RotationTransition(
+                // ignore: todo
+                // TODO: Add dynamic icon rotation based on transaction %tage.
+                turns: const AlwaysStoppedAnimation(20 / 180),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: cardIcon,
+                ),
+              ),
               Text(
-                "+$percentage%",
+                "${isPositive ? '+' : '-'}${percentage.toStringAsFixed(2)}%",
                 style: TextStyle(
                   color: foreColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 11,
                 ),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                "₵ ${compactFromat.format(total)}",
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
                 textType,
                 style: const TextStyle(
                   fontSize: 13,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                   letterSpacing: 0.2,
                 ),
               )

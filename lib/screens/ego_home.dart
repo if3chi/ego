@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ego/widgets/top_bar.dart';
-import 'package:ego/widgets/glass_card.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/utilities/constants.dart';
+import 'package:ego/widgets/analytics_card.dart';
 import 'package:ego/widgets/new_transaction.dart';
-import 'package:ego/widgets/neu_summary_card.dart';
 import 'package:ego/widgets/transactions_list.dart';
 import 'package:ego/widgets/transaction_header.dart';
 
@@ -17,6 +16,15 @@ class EgoHome extends StatefulWidget {
 
 class _EgoHomeState extends State<EgoHome> {
   final List<Transaction> transactions = Transaction.userTransactions;
+  double totalTx = 0.0;
+  double totalIncome = 0.0;
+  double totalExpenses = 0.0;
+
+  void _setFigures(transactions) {
+    totalExpenses = Transaction.totalExpenses(transactions);
+    totalIncome = Transaction.totalIncome(transactions);
+    totalTx = totalIncome + totalExpenses;
+  }
 
   void _addNewTransaction(String title, String type, double amount) {
     setState(() {
@@ -43,6 +51,8 @@ class _EgoHomeState extends State<EgoHome> {
 
   @override
   Widget build(BuildContext context) {
+    _setFigures(transactions);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
@@ -69,52 +79,18 @@ class _EgoHomeState extends State<EgoHome> {
             padding: const EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               children: [
-                const TopBar(),
+                TopBar(),
                 kSpaceWidget,
-                const AnalysisCard(),
+                AnalyticsCard(
+                  totalIncome: totalIncome,
+                  totalExpenses: totalExpenses,
+                  total: totalIncome + totalExpenses,
+                ),
                 const TransactionHeader()
               ],
             ),
           ),
           TransactionsList(transactions: (transactions.reversed).toList())
-        ],
-      ),
-    );
-  }
-}
-
-class AnalysisCard extends StatelessWidget {
-  const AnalysisCard({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GlassCard(
-      cardChild: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            "Analytics",
-            style: TextStyle(fontSize: 34, fontFamily: 'Poppins'),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              NeuSummaryCard(
-                textType: "Income",
-                percentage: 100,
-                arrowDirection: 100,
-              ),
-              NeuSummaryCard(
-                textType: "Expenses",
-                percentage: 10,
-                arrowDirection: 100,
-                isPositive: false,
-              ),
-            ],
-          )
         ],
       ),
     );

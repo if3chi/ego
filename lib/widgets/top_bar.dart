@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:ego/services/greeter.dart';
 import 'package:ego/utilities/constants.dart';
 
 class TopBar extends StatelessWidget {
-  const TopBar({Key? key}) : super(key: key);
+  TopBar({Key? key}) : super(key: key);
+
+  final String _day = Greeter.timeOfDay();
 
   @override
   Widget build(BuildContext context) {
     double paddingSize = 26.0;
+
     return Padding(
       padding: EdgeInsets.only(top: paddingSize, bottom: paddingSize),
       child: Row(
@@ -14,16 +18,16 @@ class TopBar extends StatelessWidget {
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                "Good Morning!",
-                style: TextStyle(
+                "Good $_day!",
+                style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                     letterSpacing: 1,
                     color: kSwatch4),
               ),
-              Text(
+              const Text(
                 "If3chi",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
