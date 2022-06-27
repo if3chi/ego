@@ -19,22 +19,6 @@ class EgoApp extends StatelessWidget {
         scaffoldBackgroundColor: kPrimaryColor,
       ),
       home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          foregroundColor: kSwatch5,
-          backgroundColor: kPrimaryColor,
-          onPressed: () {},
-          child: const Icon(
-            Icons.add,
-            size: 24,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 10,
-          color: kSwatch0,
-          child: Container(height: 60),
-        ),
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -45,7 +29,7 @@ class EgoApp extends StatelessWidget {
                   kPrimaryColor,
                 ]),
           ),
-          child: SafeArea(
+          child: const SafeArea(
             child: EgoHome(),
           ),
         ),

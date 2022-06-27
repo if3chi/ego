@@ -23,7 +23,7 @@ class TransactionsList extends StatelessWidget {
         ),
         Container(
           height: 330,
-          padding: const EdgeInsets.all(6),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
             color: kSwatch0.withOpacity(0.4),
             borderRadius: const BorderRadius.vertical(

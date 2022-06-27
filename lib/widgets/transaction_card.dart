@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ego/models/transaction.dart';
 import 'package:ego/utilities/constants.dart';
 
 class TransactionCard extends StatelessWidget {
@@ -17,9 +18,9 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isIncome = type == "income";
+    bool isIncome = Transaction.isIncome(type);
 
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,7 +29,7 @@ class TransactionCard extends StatelessWidget {
             Text(
               txName,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1,
               ),
@@ -38,21 +39,52 @@ class TransactionCard extends StatelessWidget {
             ),
             Text(
               dateFormat.format(txDate),
-              style: const TextStyle(
-                fontSize: 12,
+              style: TextStyle(
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
+                color: Colors.grey.shade300,
               ),
             )
           ]),
-          Text(
-            "${isIncome ? "+" : "-"}\$${numberFormat.format(amount)}",
-            style: TextStyle(
-              color: isIncome ? kGreen : kRed,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+          Column(
+            children: type == Transaction.debt
+                ? [
+                    AmountText(isIncome: isIncome, amount: amount),
+                    const SizedBox(height: 2),
+                    Text(
+                      type,
+                      style: TextStyle(
+                        color: kSwatch5.withOpacity(0.5),
+                        fontSize: 8,
+                      ),
+                    )
+                  ]
+                : [AmountText(isIncome: isIncome, amount: amount)],
           )
         ],
+      ),
+    );
+  }
+}
+
+class AmountText extends StatelessWidget {
+  const AmountText({
+    Key? key,
+    required this.isIncome,
+    required this.amount,
+  }) : super(key: key);
+
+  final bool isIncome;
+  final double amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "${isIncome ? "+" : "-"}\$${numberFormat.format(amount)}",
+      style: TextStyle(
+        color: isIncome ? kGreen : kRed,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
       ),
     );
   }

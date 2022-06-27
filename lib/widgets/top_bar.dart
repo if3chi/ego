@@ -6,7 +6,7 @@ class TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double paddingSize = 12.0;
+    double paddingSize = 26.0;
     return Padding(
       padding: EdgeInsets.only(top: paddingSize, bottom: paddingSize),
       child: Row(
