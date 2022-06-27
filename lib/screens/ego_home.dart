@@ -16,36 +16,7 @@ class EgoHome extends StatefulWidget {
 }
 
 class _EgoHomeState extends State<EgoHome> {
-  final List<Transaction> transactions = [
-    Transaction(
-        id: 1,
-        title: "Water",
-        type: "expense",
-        amount: 16,
-        date: DateTime.now()),
-    Transaction(
-        id: 2, title: "Gift", type: "income", amount: 50, date: DateTime.now()),
-    Transaction(
-        id: 3, title: "Gift", type: "income", amount: 50, date: DateTime.now()),
-    Transaction(
-        id: 4,
-        title: "Food",
-        type: "expense",
-        amount: 12,
-        date: DateTime.now()),
-    Transaction(
-        id: 5,
-        title: "Grapes",
-        type: "expense",
-        amount: 5,
-        date: DateTime.now()),
-    Transaction(
-        id: 6,
-        title: "Cloths",
-        type: "income",
-        amount: 500,
-        date: DateTime.now()),
-  ];
+  final List<Transaction> transactions = Transaction.userTransactions;
 
   void _addNewTransaction(String title, String type, double amount) {
     setState(() {
