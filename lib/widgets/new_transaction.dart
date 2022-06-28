@@ -39,133 +39,144 @@ class _NewTransactionState extends State<NewTransaction> {
               kSwatch0.withOpacity(0.9),
             ]),
       ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+      child: Column(
+        children: [
+          const Text(
+            "Add Transaction",
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, fontFamily: "Lato"),
+          ),
+          kSpaceWidget,
+          Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: 200,
-                  child: Input(
-                    icon: Icons.money,
-                    hintText: "00.00",
-                    iconColor: iconColor,
-                    inputValidator: amountValidator,
-                    editingController: _amountController,
-                    inputType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                      signed: true,
-                    ),
-                  ),
-                ),
-                kSpaceWidget,
-                SizedBox(
-                  width: 250,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InputType(
-                        value: _income,
-                        onChanged: (value) {
-                          setState(() {
-                            _income = value;
-                            if (_income) {
-                              _expense = !value;
-                              _debt = !value;
-                              _txType = Transaction.income;
-                            }
-                          });
-                        },
-                      ),
-                      InputType(
-                          text: "Expense",
-                          value: _expense,
-                          onChanged: (value) {
-                            setState(() {
-                              _expense = value;
-                              if (_expense) {
-                                _income = !value;
-                                _debt = !value;
-                                _txType = Transaction.expense;
-                              }
-                            });
-                          }),
-                      InputType(
-                          text: "Debt",
-                          value: _debt,
-                          onChanged: (value) {
-                            setState(() {
-                              _debt = value;
-                              if (_debt) {
-                                _income = !value;
-                                _expense = !value;
-                                _txType = Transaction.debt;
-                              }
-                            });
-                          }),
-                    ],
-                  ),
-                ),
-                kSpaceWidget,
-                Input(
-                  hintText: "Enter a transaction Title",
-                  iconColor: iconColor,
-                  inputValidator: titleValidator,
-                  editingController: _titleController,
-                  inputType: TextInputType.text,
-                ),
-                kSpaceWidget,
-              ],
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                elevation: MaterialStateProperty.all(2),
-                backgroundColor: MaterialStateProperty.all(kAccentColor),
-                padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 8)),
-              ),
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // ignore: todo
-                  // TODO: Add validation for checkboxes
-                  if (_txType.isEmpty) return;
-                  widget.addTransaction(
-                    _titleController.text,
-                    _txType,
-                    double.parse(_amountController.text),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      elevation: 2,
-                      backgroundColor: kSwatch5,
-                      content: Text(
-                        'Transaction Added Successfully!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                Column(
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: Input(
+                        icon: Icons.money,
+                        hintText: "00.00",
+                        iconColor: iconColor,
+                        inputValidator: amountValidator,
+                        editingController: _amountController,
+                        inputType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                          signed: true,
                         ),
                       ),
                     ),
-                  );
-
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text(
-                'Add',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                    kSpaceWidget,
+                    SizedBox(
+                      width: 250,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InputType(
+                            value: _income,
+                            onChanged: (value) {
+                              setState(() {
+                                _income = value;
+                                if (_income) {
+                                  _expense = !value;
+                                  _debt = !value;
+                                  _txType = Transaction.income;
+                                }
+                              });
+                            },
+                          ),
+                          InputType(
+                              text: "Expense",
+                              value: _expense,
+                              onChanged: (value) {
+                                setState(() {
+                                  _expense = value;
+                                  if (_expense) {
+                                    _income = !value;
+                                    _debt = !value;
+                                    _txType = Transaction.expense;
+                                  }
+                                });
+                              }),
+                          InputType(
+                              text: "Debt",
+                              value: _debt,
+                              onChanged: (value) {
+                                setState(() {
+                                  _debt = value;
+                                  if (_debt) {
+                                    _income = !value;
+                                    _expense = !value;
+                                    _txType = Transaction.debt;
+                                  }
+                                });
+                              }),
+                        ],
+                      ),
+                    ),
+                    kSpaceWidget,
+                    Input(
+                      hintText: "Enter a transaction Title",
+                      iconColor: iconColor,
+                      inputValidator: titleValidator,
+                      editingController: _titleController,
+                      inputType: TextInputType.text,
+                    ),
+                    kSpaceWidget,
+                  ],
                 ),
-              ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(2),
+                    backgroundColor: MaterialStateProperty.all(kAccentColor),
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 8)),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // ignore: todo
+                      // TODO: Add validation for checkboxes
+                      if (_txType.isEmpty) return;
+                      widget.addTransaction(
+                        _titleController.text,
+                        _txType,
+                        double.parse(_amountController.text),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          elevation: 2,
+                          backgroundColor: kSwatch5,
+                          content: Text(
+                            'Transaction Added Successfully!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      );
+
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: const Text(
+                    'Add',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
