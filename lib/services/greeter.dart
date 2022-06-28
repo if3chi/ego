@@ -7,4 +7,8 @@ class Greeter {
 
     return 'Evening';
   }
+
+  static String hello() {
+    return "Good ${timeOfDay()}!";
+  }
 }

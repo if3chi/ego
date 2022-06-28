@@ -5,7 +5,7 @@ import 'package:ego/utilities/constants.dart';
 class TopBar extends StatelessWidget {
   TopBar({Key? key}) : super(key: key);
 
-  final String _day = Greeter.timeOfDay();
+  final String _goodDay = Greeter.hello();
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +19,6 @@ class TopBar extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Good $_day!",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    letterSpacing: 1,
-                    color: kSwatch4),
-              ),
               const Text(
                 "If3chi",
                 style: TextStyle(
@@ -35,11 +27,19 @@ class TopBar extends StatelessWidget {
                   letterSpacing: 2,
                 ),
               ),
+              Text(
+                _goodDay,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    letterSpacing: 1,
+                    color: kSwatch5),
+              ),
             ],
           ),
           //
           const CircleAvatar(
-            radius: 36,
+            radius: 28,
             backgroundImage: AssetImage(
               'assets/images/face.png',
             ),
