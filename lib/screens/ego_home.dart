@@ -26,7 +26,7 @@ class _EgoHomeState extends State<EgoHome> {
   @override
   void initState() {
     super.initState();
-    widget.storage.readTransaction().then((value) {
+    widget.storage.loadTransactionsFromFile().then((value) {
       setState(() {
         transactions = value;
       });
@@ -51,7 +51,7 @@ class _EgoHomeState extends State<EgoHome> {
             date: DateTime.now()),
       );
     });
-    return widget.storage.writeTransaction(transactions);
+    return widget.storage.writeToFile(transactions);
   }
 
   void _showTransactionModal(BuildContext context) {

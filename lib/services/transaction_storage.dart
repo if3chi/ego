@@ -8,7 +8,6 @@ import 'package:path_provider/path_provider.dart';
 class TransactionStorage {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-
     return directory.path;
   }
 
@@ -17,33 +16,32 @@ class TransactionStorage {
     return File('$path/transaction.json');
   }
 
-  Future<List<Transaction>> writeTransaction(
-      List<Transaction> transactions) async {
+  Future<List<Transaction>> writeToFile(List<Transaction> transactions) async {
     final file = await _localFile;
 
-    var encodedTransactions =
-        transactions.map((e) => jsonEncode(e.toJson())).toList().toString();
+    file.writeAsString(
+      transactions
+          .map((transaction) => jsonEncode(transaction.toJson()))
+          .toList()
+          .toString(),
+    );
 
-    file.writeAsString(encodedTransactions);
     return transactions;
   }
 
-  Future<List<Transaction>> readTransaction() async {
+  Future<List<Transaction>> loadTransactionsFromFile() async {
     final file = await _localFile;
 
     if (await file.exists()) {
       try {
         var contents = jsonDecode(await file.readAsString());
 
-        log("START CONTENT READING");
-        log(contents.toString());
-        List<Transaction> decodedContents = [];
+        List<Transaction> transactions = [];
         contents
             .map((data) => Transaction.fromJson(data))
-            .forEach((transaction) => decodedContents.add(transaction));
-        log("END CONTENT READING");
+            .forEach((transaction) => transactions.add(transaction));
 
-        return decodedContents;
+        return transactions;
       } catch (e) {
         log(e.toString());
       }
