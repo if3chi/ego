@@ -6,19 +6,32 @@ import 'package:ego/widgets/analytics_card.dart';
 import 'package:ego/widgets/new_transaction.dart';
 import 'package:ego/widgets/transactions_list.dart';
 import 'package:ego/widgets/transaction_header.dart';
+import 'package:ego/services/transaction_storage.dart';
 
 class EgoHome extends StatefulWidget {
-  const EgoHome({Key? key}) : super(key: key);
+  EgoHome({Key? key}) : super(key: key);
+
+  final TransactionStorage storage = TransactionStorage();
 
   @override
   State<EgoHome> createState() => _EgoHomeState();
 }
 
 class _EgoHomeState extends State<EgoHome> {
-  final List<Transaction> transactions = Transaction.userTransactions;
+  List<Transaction> transactions = [];
   double totalTx = 0.0;
   double totalIncome = 0.0;
   double totalExpenses = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.storage.readTransaction().then((value) {
+      setState(() {
+        transactions = value;
+      });
+    });
+  }
 
   void _setFigures(transactions) {
     totalExpenses = Transaction.totalExpenses(transactions);
@@ -26,7 +39,8 @@ class _EgoHomeState extends State<EgoHome> {
     totalTx = totalIncome + totalExpenses;
   }
 
-  void _addNewTransaction(String title, String type, double amount) {
+  Future<List<Transaction>> _addNewTransaction(
+      String title, String type, double amount) {
     setState(() {
       transactions.add(
         Transaction(
@@ -37,6 +51,7 @@ class _EgoHomeState extends State<EgoHome> {
             date: DateTime.now()),
       );
     });
+    return widget.storage.writeTransaction(transactions);
   }
 
   void _showTransactionModal(BuildContext context) {

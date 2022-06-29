@@ -18,7 +18,20 @@ class Transaction {
       required this.amount,
       required this.date});
 
-  static List<Transaction> get userTransactions => [];
+  Transaction.fromJson(Map<String, dynamic> json)
+      : id = json["id"],
+        title = json["title"],
+        type = json["type"],
+        amount = json["amount"],
+        date = DateTime.parse(json["date"]);
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "type": type,
+        "amount": amount,
+        "date": date.toString()
+      };
 
   static bool isIncome(String type) => type == income;
 

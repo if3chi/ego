@@ -29,7 +29,7 @@ class EgoApp extends StatelessWidget {
                   kPrimaryColor,
                 ]),
           ),
-          child: const SafeArea(
+          child: SafeArea(
             child: EgoHome(),
           ),
         ),

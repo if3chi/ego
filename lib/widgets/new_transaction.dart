@@ -192,6 +192,7 @@ class _NewTransactionState extends State<NewTransaction> {
     if (value == null || value.isEmpty) {
       return 'Please enter a transaction title';
     }
+    if (value.length < 3) return "title cannot be less than 3 characters.";
     return null;
   }
 }
