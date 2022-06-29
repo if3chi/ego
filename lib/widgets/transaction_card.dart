@@ -29,7 +29,7 @@ class TransactionCard extends StatelessWidget {
             Text(
               txName,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1,
               ),
@@ -40,7 +40,7 @@ class TransactionCard extends StatelessWidget {
             Text(
               dateFormat.format(txDate),
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: FontWeight.w600,
                 color: Colors.grey.shade300,
               ),
@@ -83,7 +83,7 @@ class AmountText extends StatelessWidget {
       "${isIncome ? "+" : "-"}\$${numberFormat.format(amount)}",
       style: TextStyle(
         color: isIncome ? kGreen : kRed,
-        fontSize: 18,
+        fontSize: 12.5,
         fontWeight: FontWeight.w600,
       ),
     );
