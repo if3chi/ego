@@ -18,7 +18,7 @@ class EgoHome extends StatefulWidget {
 }
 
 class _EgoHomeState extends State<EgoHome> {
-  List<Transaction> transactions = [];
+  List<Transaction> _transactions = [];
   double totalTx = 0.0;
   double totalIncome = 0.0;
   double totalExpenses = 0.0;
@@ -28,9 +28,17 @@ class _EgoHomeState extends State<EgoHome> {
     super.initState();
     widget.storage.loadTransactionsFromFile().then((value) {
       setState(() {
-        transactions = value;
+        _transactions = value;
       });
     });
+  }
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((transaction) {
+      return transaction.date.isAfter(
+        DateTime.now().subtract(const Duration(days: 7)),
+      );
+    }).toList();
   }
 
   void _setFigures(transactions) {
@@ -42,16 +50,16 @@ class _EgoHomeState extends State<EgoHome> {
   Future<List<Transaction>> _addNewTransaction(
       String title, String type, double amount) {
     setState(() {
-      transactions.add(
+      _transactions.add(
         Transaction(
-            id: transactions.length + 1,
+            id: _transactions.length + 1,
             title: title,
             type: type,
             amount: amount,
             date: DateTime.now()),
       );
     });
-    return widget.storage.writeToFile(transactions);
+    return widget.storage.writeToFile(_transactions);
   }
 
   void _showTransactionModal(BuildContext context) {
@@ -66,7 +74,7 @@ class _EgoHomeState extends State<EgoHome> {
 
   @override
   Widget build(BuildContext context) {
-    _setFigures(transactions);
+    _setFigures(_transactions);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -100,12 +108,13 @@ class _EgoHomeState extends State<EgoHome> {
                   totalIncome: totalIncome,
                   totalExpenses: totalExpenses,
                   total: totalIncome + totalExpenses,
+                  recentTransactions: _recentTransactions,
                 ),
                 const TransactionHeader()
               ],
             ),
           ),
-          TransactionsList(transactions: (transactions.reversed).toList())
+          TransactionsList(transactions: (_transactions.reversed).toList())
         ],
       ),
     );
