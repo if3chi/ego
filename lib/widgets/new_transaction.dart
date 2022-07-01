@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/utilities/constants.dart';
+import 'package:ego/services/string_casing_ext.dart';
 
 class NewTransaction extends StatefulWidget {
   const NewTransaction({Key? key, required this.addTransaction})
@@ -77,6 +78,7 @@ class _NewTransactionState extends State<NewTransaction> {
                         children: [
                           InputType(
                             value: _income,
+                            checkColor: kGreen,
                             onChanged: (value) {
                               setState(() {
                                 _income = value;
@@ -90,6 +92,7 @@ class _NewTransactionState extends State<NewTransaction> {
                           ),
                           InputType(
                               text: "Expense",
+                              checkColor: kRed,
                               value: _expense,
                               onChanged: (value) {
                                 setState(() {
@@ -103,6 +106,7 @@ class _NewTransactionState extends State<NewTransaction> {
                               }),
                           InputType(
                               text: "Debt",
+                              checkColor: Colors.amber,
                               value: _debt,
                               onChanged: (value) {
                                 setState(() {
@@ -142,7 +146,7 @@ class _NewTransactionState extends State<NewTransaction> {
                       // TODO: Add validation for checkboxes
                       if (_txType.isEmpty) return;
                       widget.addTransaction(
-                        _titleController.text,
+                        _titleController.text.toTitleCase(),
                         _txType,
                         double.parse(_amountController.text),
                       );
@@ -198,15 +202,17 @@ class _NewTransactionState extends State<NewTransaction> {
 }
 
 class InputType extends StatelessWidget {
-  const InputType({
-    Key? key,
-    this.text = "Income",
-    required this.value,
-    required this.onChanged,
-  }) : super(key: key);
+  const InputType(
+      {Key? key,
+      this.text = "Income",
+      required this.value,
+      required this.onChanged,
+      required this.checkColor})
+      : super(key: key);
 
   final String text;
   final bool value;
+  final Color checkColor;
   final Function onChanged;
 
   @override
@@ -215,6 +221,7 @@ class InputType extends StatelessWidget {
       children: [
         Checkbox(
           value: value,
+          activeColor: checkColor,
           onChanged: (value) => onChanged(value),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50),

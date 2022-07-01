@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/utilities/constants.dart';
@@ -22,7 +21,7 @@ class TransactionsList extends StatelessWidget {
           ),
         ),
         Container(
-          height: 330,
+          height: 400,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
             color: kSwatch0.withOpacity(0.4),

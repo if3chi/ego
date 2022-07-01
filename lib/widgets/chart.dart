@@ -34,7 +34,6 @@ class Chart extends StatelessWidget {
     return Card(
       color: Colors.transparent,
       shadowColor: Colors.transparent,
-      // elevation: 6,
       margin: const EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
