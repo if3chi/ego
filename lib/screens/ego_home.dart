@@ -48,15 +48,16 @@ class _EgoHomeState extends State<EgoHome> {
   }
 
   Future<List<Transaction>> _addNewTransaction(
-      String title, String type, double amount) {
+      String title, String type, double amount, DateTime date) {
     setState(() {
       _transactions.add(
         Transaction(
-            id: _transactions.length + 1,
-            title: title,
-            type: type,
-            amount: amount,
-            date: DateTime.now()),
+          id: _transactions.length + 1,
+          title: title,
+          type: type,
+          amount: amount,
+          date: date,
+        ),
       );
     });
     return widget.storage.writeToFile(_transactions);
@@ -64,10 +65,14 @@ class _EgoHomeState extends State<EgoHome> {
 
   void _showTransactionModal(BuildContext context) {
     showModalBottomSheet(
-      backgroundColor: Colors.transparent,
       context: context,
-      builder: (_) => NewTransaction(
-        addTransaction: _addNewTransaction,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: NewTransaction(
+          addTransaction: _addNewTransaction,
+        ),
       ),
     );
   }

@@ -22,6 +22,53 @@ class _NewTransactionState extends State<NewTransaction> {
   bool _expense = false;
   bool _debt = false;
   String _txType = "";
+  bool hasDate = false;
+  bool dateErrorText = false;
+  bool typeErrorText = false;
+  late DateTime _chosenDate;
+
+  void _openDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2021),
+            lastDate: DateTime.now())
+        .then((value) {
+      if (value == null) return;
+      setState(() {
+        _chosenDate = value;
+        hasDate = true;
+        dateErrorText = !hasDate;
+      });
+    });
+  }
+
+  void validator() {
+    if (!hasDate) {
+      setState(() {
+        dateErrorText = !hasDate;
+      });
+    }
+    if (_txType.isEmpty) {
+      setState(() {
+        typeErrorText = _txType.isEmpty;
+      });
+    }
+    return;
+  }
+
+  void submitData() {
+    if (_formKey.currentState!.validate()) {
+      validator();
+      if (!hasDate || _txType.isEmpty) return;
+
+      widget.addTransaction(_titleController.text.toTitleCase(), _txType,
+          double.parse(_amountController.text), _chosenDate);
+
+      Navigator.of(context).pop();
+      notify(context: context, title: _titleController.text.toTitleCase());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,142 +83,156 @@ class _NewTransactionState extends State<NewTransaction> {
         gradient: LinearGradient(
             begin: Alignment.bottomRight,
             end: Alignment.topLeft,
-            colors: [
-              kSwatch3.withOpacity(0.9),
-              kSwatch0.withOpacity(0.9),
-            ]),
+            colors: [kSwatch3.withOpacity(0.9), kSwatch0.withOpacity(0.9)]),
       ),
-      child: Column(
-        children: [
-          const Text(
-            "Add Transaction",
+      child: Column(children: [
+        const Text("Add Transaction",
             style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, fontFamily: "Lato"),
-          ),
-          kSpaceWidget,
-          Form(
+                fontSize: 20, fontWeight: FontWeight.bold, fontFamily: "Lato")),
+        kSpaceWidget,
+        Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(children: [
                     SizedBox(
-                      width: 200,
-                      child: Input(
-                        icon: Icons.money,
-                        hintText: "00.00",
-                        iconColor: iconColor,
-                        inputValidator: amountValidator,
-                        editingController: _amountController,
-                        inputType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                          signed: true,
-                        ),
-                      ),
-                    ),
+                        width: 200,
+                        child: Input(
+                          icon: Icons.money,
+                          hintText: "00.00",
+                          iconColor: iconColor,
+                          inputValidator: amountValidator,
+                          editingController: _amountController,
+                          inputType: const TextInputType.numberWithOptions(
+                              decimal: true, signed: true),
+                        )),
                     kSpaceWidget,
-                    SizedBox(
-                      width: 250,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          InputType(
-                            value: _income,
-                            checkColor: kGreen,
-                            onChanged: (value) {
-                              setState(() {
-                                _income = value;
-                                if (_income) {
-                                  _expense = !value;
-                                  _debt = !value;
-                                  _txType = Transaction.income;
-                                }
-                              });
-                            },
-                          ),
-                          InputType(
-                              text: "Expense",
-                              checkColor: kRed,
-                              value: _expense,
-                              onChanged: (value) {
-                                setState(() {
-                                  _expense = value;
-                                  if (_expense) {
-                                    _income = !value;
-                                    _debt = !value;
-                                    _txType = Transaction.expense;
-                                  }
-                                });
-                              }),
-                          InputType(
-                              text: "Debt",
-                              checkColor: Colors.amber,
-                              value: _debt,
-                              onChanged: (value) {
-                                setState(() {
-                                  _debt = value;
-                                  if (_debt) {
-                                    _income = !value;
-                                    _expense = !value;
-                                    _txType = Transaction.debt;
-                                  }
-                                });
-                              }),
-                        ],
-                      ),
-                    ),
+                    checkBoxes(),
+                    kSpaceWidget,
+                    dateWidget(),
                     kSpaceWidget,
                     Input(
-                      hintText: "Enter a transaction Title",
-                      iconColor: iconColor,
-                      inputValidator: titleValidator,
-                      editingController: _titleController,
-                      inputType: TextInputType.text,
-                    ),
+                        hintText: "Enter a transaction Title",
+                        iconColor: iconColor,
+                        inputValidator: titleValidator,
+                        editingController: _titleController,
+                        inputType: TextInputType.text),
                     kSpaceWidget,
-                  ],
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(2),
-                    backgroundColor: MaterialStateProperty.all(kAccentColor),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 8)),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // ignore: todo
-                      // TODO: Add validation for checkboxes
-                      if (_txType.isEmpty) return;
-                      widget.addTransaction(
-                        _titleController.text.toTitleCase(),
-                        _txType,
-                        double.parse(_amountController.text),
-                      );
+                  ]),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(2),
+                        backgroundColor:
+                            MaterialStateProperty.all(kAccentColor),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                                horizontal: 18, vertical: 8)),
+                      ),
+                      onPressed: submitData,
+                      child: const Text(
+                        'Add',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ))
+                ]))
+      ]),
+    );
+  }
 
-                      Navigator.of(context).pop();
-                      notify(
-                        context: context,
-                        title: _titleController.text.toTitleCase(),
-                      );
-                    }
-                  },
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+  Column dateWidget() {
+    return Column(children: [
+      Padding(
+          padding: const EdgeInsets.all(8.0),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(hasDate
+                ? "Chosen Date: ${dateFormat.format(_chosenDate)}"
+                : 'Pick a Date:'),
+            TextButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(kAccentColor),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.hovered)) {
+                        return kAccentColor.withOpacity(0.04);
+                      }
+                      if (states.contains(MaterialState.focused) ||
+                          states.contains(MaterialState.pressed)) {
+                        return kAccentColor.withOpacity(0.12);
+                      }
+                      return null; // Defer to the widget's default.
+                    })),
+                onPressed: _openDatePicker,
+                child: const Text('Choose Date'))
+          ])),
+      Text(dateErrorText ? "Choose a Date for this Transaction." : '',
+          style: const TextStyle(
+              color: kRed, fontSize: 12, fontWeight: FontWeight.w600))
+    ]);
+  }
+
+  SizedBox checkBoxes() {
+    return SizedBox(
+      width: 250,
+      child: Column(children: [
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InputType(
+                  value: _income,
+                  checkColor: kGreen,
+                  onChanged: (value) {
+                    setState(() {
+                      _income = value;
+                      if (_income) {
+                        _expense = !value;
+                        _debt = !value;
+                        _txType = Transaction.income;
+                        typeErrorText = !value;
+                      }
+                    });
+                  }),
+              InputType(
+                  text: "Expense",
+                  checkColor: kRed,
+                  value: _expense,
+                  onChanged: (value) {
+                    setState(() {
+                      _expense = value;
+                      if (_expense) {
+                        _income = !value;
+                        _debt = !value;
+                        _txType = Transaction.expense;
+                        typeErrorText = !value;
+                      }
+                    });
+                  }),
+              InputType(
+                  text: "Debt",
+                  checkColor: Colors.amber,
+                  value: _debt,
+                  onChanged: (value) {
+                    setState(() {
+                      _debt = value;
+                      if (_debt) {
+                        _income = !value;
+                        _expense = !value;
+                        _txType = Transaction.debt;
+                        typeErrorText = !value;
+                      }
+                    });
+                  }),
+            ]),
+        const SizedBox(height: 8.0),
+        Text(typeErrorText ? "The transaction type is required." : '',
+            style: const TextStyle(
+                color: kRed, fontSize: 12, fontWeight: FontWeight.w600))
+      ]),
     );
   }
 
@@ -265,7 +326,6 @@ class Input extends StatelessWidget {
           fontWeight: FontWeight.w700,
         ),
         border: const OutlineInputBorder(
-          // borderSide: BorderSide(width: 6),
           borderRadius: BorderRadius.all(
             Radius.circular(50.0),
           ),
@@ -290,29 +350,19 @@ void notify({required BuildContext context, String title = ''}) {
     padding: const EdgeInsets.all(8),
     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
     backgroundGradient: const LinearGradient(
-      colors: [kPrimaryColor, kSecondaryColor],
-      stops: [0.6, 1],
-    ),
+        colors: [kSecondaryColor, kPrimaryColor], stops: [0.6, 1]),
     boxShadows: const [
-      BoxShadow(
-        color: Colors.black45,
-        offset: Offset(3, 3),
-        blurRadius: 3,
-      ),
+      BoxShadow(color: Colors.black45, offset: Offset(3, 3), blurRadius: 3),
     ],
     dismissDirection: FlushbarDismissDirection.HORIZONTAL,
     forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
     duration: const Duration(seconds: 5),
     flushbarPosition: FlushbarPosition.TOP,
-    titleText: Text(
-      title,
-      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-      textAlign: TextAlign.center,
-    ),
-    messageText: const Text(
-      'Transaction Added Successfully!',
-      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
-      textAlign: TextAlign.center,
-    ),
+    titleText: Text(title,
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+        textAlign: TextAlign.center),
+    messageText: const Text('Transaction Added Successfully!',
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
+        textAlign: TextAlign.center),
   ).show(context);
 }
