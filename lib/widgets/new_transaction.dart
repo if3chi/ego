@@ -58,8 +58,8 @@ class _NewTransactionState extends State<NewTransaction> {
   }
 
   void submitData() {
+    validator();
     if (_formKey.currentState!.validate()) {
-      validator();
       if (!hasDate || _txType.isEmpty) return;
 
       widget.addTransaction(_titleController.text.toTitleCase(), _txType,
@@ -268,25 +268,16 @@ class InputType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Checkbox(
+    return Column(children: [
+      Checkbox(
           value: value,
           activeColor: checkColor,
           onChanged: (value) => onChanged(value),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-        ),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        )
-      ],
-    );
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+      Text(text,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400))
+    ]);
   }
 }
 
@@ -311,36 +302,22 @@ class Input extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: editingController,
-      textAlign: TextAlign.center,
-      textAlignVertical: TextAlignVertical.center,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(
-          icon,
-          size: 32,
-          color: iconColor,
+        controller: editingController,
+        textAlign: TextAlign.center,
+        textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+          hintText: hintText,
+          prefixIcon: Icon(icon, size: 32, color: iconColor),
+          errorStyle:
+              const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(50.0),
+              borderSide: BorderSide(width: 3, color: iconColor)),
         ),
-        errorStyle: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w700,
-        ),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(50.0),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50.0),
-          borderSide: BorderSide(
-            width: 3,
-            color: iconColor,
-          ),
-        ),
-      ),
-      keyboardType: inputType,
-      validator: inputValidator,
-    );
+        keyboardType: inputType,
+        validator: inputValidator);
   }
 }
 

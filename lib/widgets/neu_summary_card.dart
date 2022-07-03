@@ -35,7 +35,7 @@ class NeuSummaryCard extends StatelessWidget {
           );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       width: 140,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),

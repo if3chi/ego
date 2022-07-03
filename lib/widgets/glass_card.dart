@@ -36,9 +36,7 @@ class GlassCard extends StatelessWidget {
                       Colors.white.withOpacity(0.1),
                     ]),
               ),
-              child: Center(
-                child: cardChild,
-              ),
+              child: cardChild,
             ),
           ],
         ),

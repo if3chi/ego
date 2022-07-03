@@ -35,9 +35,8 @@ class _EgoHomeState extends State<EgoHome> {
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
-      return transaction.date.isAfter(
-        DateTime.now().subtract(const Duration(days: 7)),
-      );
+      return transaction.date
+          .isAfter(DateTime.now().subtract(const Duration(days: 7)));
     }).toList();
   }
 
@@ -50,31 +49,24 @@ class _EgoHomeState extends State<EgoHome> {
   Future<List<Transaction>> _addNewTransaction(
       String title, String type, double amount, DateTime date) {
     setState(() {
-      _transactions.add(
-        Transaction(
+      _transactions.add(Transaction(
           id: _transactions.length + 1,
           title: title,
           type: type,
           amount: amount,
-          date: date,
-        ),
-      );
+          date: date));
     });
     return widget.storage.writeToFile(_transactions);
   }
 
   void _showTransactionModal(BuildContext context) {
     showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: NewTransaction(
-          addTransaction: _addNewTransaction,
-        ),
-      ),
-    );
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: NewTransaction(addTransaction: _addNewTransaction)));
   }
 
   @override
@@ -84,42 +76,38 @@ class _EgoHomeState extends State<EgoHome> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton(
-        foregroundColor: kSwatch5,
-        backgroundColor: kPrimaryColor,
-        onPressed: () => _showTransactionModal(context),
-        child: const Icon(
-          Icons.add,
-          size: 24,
-          color: Colors.white,
-        ),
-      ),
+          foregroundColor: kSwatch5,
+          backgroundColor: kPrimaryColor,
+          onPressed: () => _showTransactionModal(context),
+          child: const Icon(Icons.add, size: 24, color: Colors.white)),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10,
-        color: kSwatch0,
-        child: Container(height: 60),
-      ),
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 10,
+          color: kSwatch0,
+          child: Container(height: MediaQuery.of(context).size.height * 0.07)),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
+            height: MediaQuery.of(context).size.height * 0.425,
             padding: const EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               children: [
                 TopBar(),
-                kSpaceWidget,
                 AnalyticsCard(
-                  totalIncome: totalIncome,
-                  totalExpenses: totalExpenses,
-                  total: totalIncome + totalExpenses,
-                  recentTransactions: _recentTransactions,
-                ),
+                    totalIncome: totalIncome,
+                    totalExpenses: totalExpenses,
+                    total: totalIncome + totalExpenses,
+                    recentTransactions: _recentTransactions),
                 const TransactionHeader()
               ],
             ),
           ),
-          TransactionsList(transactions: (_transactions.reversed).toList())
+          SizedBox(
+              height: MediaQuery.of(context).size.height * 0.47,
+              child: TransactionsList(
+                  transactions: (_transactions.reversed).toList()))
         ],
       ),
     );
