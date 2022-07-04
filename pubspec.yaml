@@ -18,6 +18,8 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.11
   another_flushbar: ^1.10.29
+  flutter_slidable: ^1.3.0
+  rflutter_alert: ^2.0.4
 
 dev_dependencies:
   flutter_test:

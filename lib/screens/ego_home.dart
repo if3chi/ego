@@ -40,6 +40,19 @@ class _EgoHomeState extends State<EgoHome> {
     }).toList();
   }
 
+  bool deleteTransaction(int transactionId) {
+    bool isDeleted = false;
+
+    setState(() {
+      var count = _transactions.length;
+      _transactions.removeWhere((tx) => tx.id == transactionId);
+      isDeleted = count > _transactions.length;
+    });
+    widget.storage.writeToFile(_transactions);
+
+    return isDeleted;
+  }
+
   void _setFigures(transactions) {
     totalExpenses = Transaction.totalExpenses(transactions);
     totalIncome = Transaction.totalIncome(transactions);
@@ -107,7 +120,9 @@ class _EgoHomeState extends State<EgoHome> {
           SizedBox(
               height: MediaQuery.of(context).size.height * 0.47,
               child: TransactionsList(
-                  transactions: (_transactions.reversed).toList()))
+                transactions: (_transactions.reversed).toList(),
+                deleteTransaction: deleteTransaction,
+              ))
         ],
       ),
     );

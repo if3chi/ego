@@ -1,7 +1,7 @@
+import 'package:ego/services/notify.dart';
 import 'package:flutter/material.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/utilities/constants.dart';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:ego/services/string_casing_ext.dart';
 
 class NewTransaction extends StatefulWidget {
@@ -66,7 +66,10 @@ class _NewTransactionState extends State<NewTransaction> {
           double.parse(_amountController.text), _chosenDate);
 
       Navigator.of(context).pop();
-      notify(context: context, title: _titleController.text.toTitleCase());
+      Notify.show(
+          context: context,
+          action: 'Added',
+          title: _titleController.text.toTitleCase());
     }
   }
 
@@ -319,27 +322,4 @@ class Input extends StatelessWidget {
         keyboardType: inputType,
         validator: inputValidator);
   }
-}
-
-void notify({required BuildContext context, String title = ''}) {
-  Flushbar(
-    margin: const EdgeInsets.all(10),
-    padding: const EdgeInsets.all(8),
-    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-    backgroundGradient: const LinearGradient(
-        colors: [kSecondaryColor, kPrimaryColor], stops: [0.6, 1]),
-    boxShadows: const [
-      BoxShadow(color: Colors.black45, offset: Offset(3, 3), blurRadius: 3),
-    ],
-    dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-    forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-    duration: const Duration(seconds: 5),
-    flushbarPosition: FlushbarPosition.TOP,
-    titleText: Text(title,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-        textAlign: TextAlign.center),
-    messageText: const Text('Transaction Added Successfully!',
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
-        textAlign: TextAlign.center),
-  ).show(context);
 }

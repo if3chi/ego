@@ -23,13 +23,13 @@ class NeuSummaryCard extends StatelessWidget {
     final cardIcon = isPositive
         ? SvgPicture.asset(
             "assets/images/up_arrow.svg",
-            width: 14,
+            width: 16,
             color: foreColor,
             semanticsLabel: 'An up arrow',
           )
         : SvgPicture.asset(
             "assets/images/down_arrow.svg",
-            width: 14,
+            width: 16,
             color: foreColor,
             semanticsLabel: 'A down arrow',
           );
@@ -58,7 +58,8 @@ class NeuSummaryCard extends StatelessWidget {
                 // TODO: Add dynamic icon rotation based on transaction %tage.
                 turns: const AlwaysStoppedAnimation(20 / 180),
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(6.0),
+                  margin: const EdgeInsets.only(top: 6.0),
                   decoration: BoxDecoration(
                     color: bgColor,
                     shape: BoxShape.circle,
