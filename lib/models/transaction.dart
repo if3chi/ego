@@ -10,6 +10,7 @@ class Transaction {
   static String get debt =>
       // ignore: todo
       "debt"; // TODO: add reminder/push notification for debts.
+  static String get update => "update";
 
   Transaction(
       {required this.id,

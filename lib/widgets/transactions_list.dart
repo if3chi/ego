@@ -8,16 +8,25 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TransactionsList extends StatelessWidget {
   const TransactionsList(
-      {Key? key, required this.transactions, required this.deleteTransaction})
+      {Key? key,
+      required this.transactions,
+      required this.deleteAction,
+      required this.updateAction})
       : super(key: key);
 
-  final Function? deleteTransaction;
+  final Function updateAction;
+  final Function deleteAction;
   final List<Transaction> transactions;
 
   void cofirmDelete(BuildContext context, int index) {
-    if (deleteTransaction!(transactions[index].id)) {
+    if (deleteAction(transactions[index].id)) {
       Notify.show(context: context, action: 'Deleted');
     }
+  }
+
+  void updateTx(BuildContext context, Transaction transaction) {
+    updateAction(context,
+        transaction: transaction, editType: Transaction.update);
   }
 
   @override
@@ -41,7 +50,8 @@ class TransactionsList extends StatelessWidget {
                       endActionPane:
                           ActionPane(motion: const StretchMotion(), children: [
                         SlidableAction(
-                            onPressed: (context) {},
+                            onPressed: (context) =>
+                                updateTx(parentContext, transactions[index]),
                             backgroundColor: Colors.amber.shade500,
                             foregroundColor: Colors.white,
                             icon: Icons.edit),

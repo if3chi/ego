@@ -1,20 +1,24 @@
-import 'dart:math';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:ego/services/notify.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/utilities/constants.dart';
 import 'package:ego/services/string_casing_ext.dart';
 
-class NewTransaction extends StatefulWidget {
-  const NewTransaction({Key? key, required this.addTransaction})
+class UpdateTransaction extends StatefulWidget {
+  const UpdateTransaction(
+      {Key? key, required this.updateTransaction, required this.transaction})
       : super(key: key);
-  final Function addTransaction;
+
+  final Transaction transaction;
+  final Function updateTransaction;
 
   @override
-  State<NewTransaction> createState() => _NewTransactionState();
+  State<UpdateTransaction> createState() => _UpdateTransactionState();
 }
 
-class _NewTransactionState extends State<NewTransaction> {
+class _UpdateTransactionState extends State<UpdateTransaction> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
@@ -27,6 +31,19 @@ class _NewTransactionState extends State<NewTransaction> {
   bool dateErrorText = false;
   bool typeErrorText = false;
   late DateTime _chosenDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController.text = widget.transaction.title;
+    _amountController.text = widget.transaction.amount.toString();
+    _chosenDate = widget.transaction.date;
+    hasDate = true;
+    _txType = widget.transaction.type;
+    _income = _txType == Transaction.income;
+    _expense = _txType == Transaction.expense;
+    _debt = _txType == Transaction.debt;
+  }
 
   void _openDatePicker() {
     showDatePicker(
@@ -63,8 +80,8 @@ class _NewTransactionState extends State<NewTransaction> {
     if (_formKey.currentState!.validate()) {
       if (!hasDate || _txType.isEmpty) return;
 
-      widget.addTransaction(Transaction(
-          id: Random(2022).nextInt(100),
+      widget.updateTransaction(Transaction(
+          id: widget.transaction.id,
           title: _titleController.text.toTitleCase(),
           type: _txType,
           amount: double.parse(_amountController.text),
@@ -73,7 +90,7 @@ class _NewTransactionState extends State<NewTransaction> {
       Navigator.of(context).pop();
       Notify.show(
           context: context,
-          action: 'Added',
+          action: 'Updated',
           title: _titleController.text.toTitleCase());
     }
   }
@@ -94,7 +111,7 @@ class _NewTransactionState extends State<NewTransaction> {
             colors: [kSwatch3.withOpacity(0.9), kSwatch0.withOpacity(0.9)]),
       ),
       child: Column(children: [
-        const Text("Add Transaction",
+        const Text("Update Transaction",
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, fontFamily: "Lato")),
         kSpaceWidget,
@@ -139,7 +156,7 @@ class _NewTransactionState extends State<NewTransaction> {
                       ),
                       onPressed: submitData,
                       child: const Text(
-                        'Add',
+                        'Update',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ))
@@ -155,7 +172,7 @@ class _NewTransactionState extends State<NewTransaction> {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(hasDate
-                ? "Chosen Date: ${dateFormat.format(_chosenDate)}"
+                ? "Transaction Date: ${dateFormat.format(_chosenDate)}"
                 : 'Pick a Date:'),
             TextButton(
                 style: ButtonStyle(

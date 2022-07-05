@@ -6,6 +6,7 @@ import 'package:ego/widgets/analytics_card.dart';
 import 'package:ego/widgets/new_transaction.dart';
 import 'package:ego/widgets/transactions_list.dart';
 import 'package:ego/widgets/transaction_header.dart';
+import 'package:ego/widgets/update_transaction.dart';
 import 'package:ego/services/transaction_storage.dart';
 
 class EgoHome extends StatefulWidget {
@@ -40,6 +41,19 @@ class _EgoHomeState extends State<EgoHome> {
     }).toList();
   }
 
+  void update(Transaction transaction) {
+    setState(() {
+      var tx = _transactions.singleWhere((tx) => tx.id == transaction.id);
+      tx.id = transaction.id;
+      tx.title = transaction.title;
+      tx.type = transaction.type;
+      tx.amount = transaction.amount;
+      tx.date = transaction.date;
+    });
+
+    widget.storage.writeToFile(_transactions);
+  }
+
   bool deleteTransaction(int transactionId) {
     bool isDeleted = false;
 
@@ -59,27 +73,28 @@ class _EgoHomeState extends State<EgoHome> {
     totalTx = totalIncome + totalExpenses;
   }
 
-  Future<List<Transaction>> _addNewTransaction(
-      String title, String type, double amount, DateTime date) {
+  void _addNewTransaction(Transaction transaction) {
+    transaction.id = _transactions.length + 1;
+
     setState(() {
-      _transactions.add(Transaction(
-          id: _transactions.length + 1,
-          title: title,
-          type: type,
-          amount: amount,
-          date: date));
+      _transactions.add(transaction);
     });
-    return widget.storage.writeToFile(_transactions);
+
+    widget.storage.writeToFile(_transactions);
   }
 
-  void _showTransactionModal(BuildContext context) {
+  void _showTransactionModal(BuildContext context,
+      {transaction = '', String editType = ''}) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (_) => SizedBox(
             height: MediaQuery.of(context).size.height * 0.7,
-            child: NewTransaction(addTransaction: _addNewTransaction)));
+            child: editType == Transaction.update
+                ? UpdateTransaction(
+                    updateTransaction: update, transaction: transaction)
+                : NewTransaction(addTransaction: _addNewTransaction)));
   }
 
   @override
@@ -121,7 +136,8 @@ class _EgoHomeState extends State<EgoHome> {
               height: MediaQuery.of(context).size.height * 0.47,
               child: TransactionsList(
                 transactions: (_transactions.reversed).toList(),
-                deleteTransaction: deleteTransaction,
+                updateAction: _showTransactionModal,
+                deleteAction: deleteTransaction,
               ))
         ],
       ),
