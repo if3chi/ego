@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:ego/services/greeter.dart';
-import 'package:ego/utilities/constants.dart';
 
 class TopBar extends StatelessWidget {
   TopBar({Key? key}) : super(key: key);
@@ -20,10 +20,10 @@ class TopBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "If3chi",
+                "Hello, If3chi",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
-                  fontSize: 24,
+                  fontSize: 20,
                   letterSpacing: 2,
                 ),
               ),

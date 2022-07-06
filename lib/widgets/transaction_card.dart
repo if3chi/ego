@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ego/util/constants.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
-import 'package:ego/utilities/constants.dart';
 
 class TransactionCard extends StatelessWidget {
   const TransactionCard({
@@ -56,7 +57,7 @@ class TransactionCard extends StatelessWidget {
               children: type == Transaction.debt
                   ? [
                       AmountText(isIncome: isIncome, amount: amount),
-                      const SizedBox(height: 2),
+                      vSpaceMicro,
                       Text(
                         type,
                         style: TextStyle(

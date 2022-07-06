@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ego/utilities/constants.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 

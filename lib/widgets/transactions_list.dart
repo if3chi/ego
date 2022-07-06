@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:ego/services/notify.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
-import 'package:ego/utilities/constants.dart';
 import 'package:ego/widgets/transaction_card.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 

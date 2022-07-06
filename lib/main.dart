@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:ego/util/constants.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:ego/screens/ego_home.dart';
-import 'package:ego/utilities/constants.dart';
 
 void main() => runApp(const EgoApp());
 

@@ -1,7 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:ego/util/constants.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
-import 'package:ego/utilities/constants.dart';
 
 class Chart extends StatelessWidget {
   const Chart({Key? key, required this.recentTransactions}) : super(key: key);
@@ -97,7 +98,7 @@ class ChartBar extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 4),
+        vSpaceTiny,
         Text(
           amount,
           style: TextStyle(

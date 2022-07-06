@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:ego/util/constants.dart';
 import 'package:ego/services/notify.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
-import 'package:ego/utilities/constants.dart';
 import 'package:ego/services/string_casing_ext.dart';
 
 class UpdateTransaction extends StatefulWidget {
@@ -99,7 +98,11 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
   Widget build(BuildContext context) {
     var iconColor = kSwatch5.withOpacity(0.40);
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: EdgeInsets.only(
+          top: 32,
+          right: 32,
+          left: 32,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10),
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.vertical(
@@ -110,11 +113,11 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
             end: Alignment.topLeft,
             colors: [kSwatch3.withOpacity(0.9), kSwatch0.withOpacity(0.9)]),
       ),
-      child: Column(children: [
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
         const Text("Update Transaction",
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, fontFamily: "Lato")),
-        kSpaceWidget,
+        vSpaceMedium,
         Form(
             key: _formKey,
             child: Column(
@@ -132,18 +135,18 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
                           inputType: const TextInputType.numberWithOptions(
                               decimal: true, signed: true),
                         )),
-                    kSpaceWidget,
+                    vSpaceMedium,
                     checkBoxes(),
-                    kSpaceWidget,
+                    vSpaceMedium,
                     dateWidget(),
-                    kSpaceWidget,
+                    vSpaceMedium,
                     Input(
                         hintText: "Enter a transaction Title",
                         iconColor: iconColor,
                         inputValidator: titleValidator,
                         editingController: _titleController,
                         inputType: TextInputType.text),
-                    kSpaceWidget,
+                    vSpaceMedium,
                   ]),
                   ElevatedButton(
                       style: ButtonStyle(
@@ -253,7 +256,7 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
                     });
                   }),
             ]),
-        const SizedBox(height: 8.0),
+        vSpaceNormal,
         Text(typeErrorText ? "The transaction type is required." : '',
             style: const TextStyle(
                 color: kRed, fontSize: 12, fontWeight: FontWeight.w600))

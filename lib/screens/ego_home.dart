@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ego/widgets/top_bar.dart';
+import 'package:ego/util/ui_helpers.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
-import 'package:ego/utilities/constants.dart';
 import 'package:ego/widgets/analytics_card.dart';
 import 'package:ego/widgets/new_transaction.dart';
 import 'package:ego/widgets/transactions_list.dart';
@@ -90,7 +91,6 @@ class _EgoHomeState extends State<EgoHome> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (_) => SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
             child: editType == Transaction.update
                 ? UpdateTransaction(
                     updateTransaction: update, transaction: transaction)
@@ -113,12 +113,14 @@ class _EgoHomeState extends State<EgoHome> {
           shape: const CircularNotchedRectangle(),
           notchMargin: 10,
           color: kSwatch0,
-          child: Container(height: MediaQuery.of(context).size.height * 0.07)),
+          child: SizedBox(
+            height: screenHeightPercent(context, percentage: 0.07),
+          )),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.425,
+            height: screenHeightPercent(context, percentage: 0.425),
             padding: const EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               children: [
@@ -133,7 +135,7 @@ class _EgoHomeState extends State<EgoHome> {
             ),
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.height * 0.47,
+              height: screenHeightPercent(context, percentage: 0.47),
               child: TransactionsList(
                 transactions: (_transactions.reversed).toList(),
                 updateAction: _showTransactionModal,

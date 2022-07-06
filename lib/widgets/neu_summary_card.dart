@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ego/utilities/constants.dart';
+import 'package:ego/util/constants.dart';
+import 'package:ego/util/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NeuSummaryCard extends StatelessWidget {

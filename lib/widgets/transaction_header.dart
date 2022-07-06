@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ego/utilities/constants.dart';
+import 'package:ego/util/app_colors.dart';
 
 class TransactionHeader extends StatelessWidget {
   const TransactionHeader({
