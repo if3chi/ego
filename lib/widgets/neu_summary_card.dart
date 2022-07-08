@@ -19,7 +19,7 @@ class NeuSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color foreColor = isPositive ? kGreen : kRed;
+    Color foreColor = isPositive ? kGreenColor : kRedColor;
     Color bgColor = isPositive ? kBgGreen : kBgRed;
     final cardIcon = isPositive
         ? SvgPicture.asset(

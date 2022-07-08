@@ -91,7 +91,7 @@ class AmountText extends StatelessWidget {
       "${isIncome ? "+" : "-"}\$${numberFormat.format(amount)}",
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        color: isIncome ? kGreen : kRed,
+        color: isIncome ? kGreenColor : kRedColor,
         fontSize: 12.5,
         fontWeight: FontWeight.w600,
       ),

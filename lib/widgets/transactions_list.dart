@@ -58,13 +58,13 @@ class TransactionsList extends StatelessWidget {
                         SlidableAction(
                             onPressed: (context) => Notify.alert(
                                 parentContext, cofirmDelete, index),
-                            backgroundColor: kRed,
+                            backgroundColor: kRedColor,
                             foregroundColor: Colors.white,
                             icon: Icons.delete),
                         SlidableAction(
                             onPressed: (context) {},
                             backgroundColor: Colors.white,
-                            foregroundColor: kRed,
+                            foregroundColor: kRedColor,
                             icon: Icons.close)
                       ]),
                       child: TransactionCard(

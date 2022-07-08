@@ -10,7 +10,8 @@ final NumberFormat compactFromat = NumberFormat.compact();
 
 const SizedBox vSpaceMicro = SizedBox(height: 2.0);
 const SizedBox vSpaceTiny = SizedBox(height: 4.0);
-const SizedBox vSpaceNormal = SizedBox(height: 8.0);
+const SizedBox vSpaceSmall = SizedBox(height: 8.0);
+const SizedBox vSpaceNormal = SizedBox(height: 10.0);
 const SizedBox vSpaceMedium = SizedBox(height: 24.0);
 
 List<BoxShadow> kBoxShadow = [

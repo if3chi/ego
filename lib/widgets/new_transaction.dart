@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:ego/util/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:ego/util/constants.dart';
 import 'package:ego/services/notify.dart';
 import 'package:ego/util/app_colors.dart';
+import 'package:ego/widgets/ego_text.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/services/string_casing_ext.dart';
 
@@ -99,9 +101,7 @@ class _NewTransactionState extends State<NewTransaction> {
             colors: [kSwatch3.withOpacity(0.9), kSwatch0.withOpacity(0.9)]),
       ),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
-        const Text("Add Transaction",
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, fontFamily: "Lato")),
+        EgoText.headline("Add Transaction"),
         vSpaceMedium,
         Form(
             key: _formKey,
@@ -134,20 +134,16 @@ class _NewTransactionState extends State<NewTransaction> {
                     vSpaceMedium,
                   ]),
                   ElevatedButton(
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(2),
-                        backgroundColor:
-                            MaterialStateProperty.all(kAccentColor),
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(
-                                horizontal: 18, vertical: 8)),
-                      ),
-                      onPressed: submitData,
-                      child: const Text(
-                        'Add',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ))
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(2),
+                      backgroundColor: MaterialStateProperty.all(kAccentColor),
+                      padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 8)),
+                    ),
+                    onPressed: submitData,
+                    child: EgoText.action('Add'),
+                  )
                 ]))
       ]),
     );
@@ -159,7 +155,7 @@ class _NewTransactionState extends State<NewTransaction> {
           padding: const EdgeInsets.all(8.0),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(hasDate
+            EgoText.caption(hasDate
                 ? "Chosen Date: ${dateFormat.format(_chosenDate)}"
                 : 'Pick a Date:'),
             TextButton(
@@ -180,11 +176,11 @@ class _NewTransactionState extends State<NewTransaction> {
                       return null; // Defer to the widget's default.
                     })),
                 onPressed: _openDatePicker,
-                child: const Text('Choose Date'))
+                child: EgoText.action('Choose Date'))
           ])),
-      Text(dateErrorText ? "Choose a Date for this Transaction." : '',
-          style: const TextStyle(
-              color: kRed, fontSize: 12, fontWeight: FontWeight.w600))
+      EgoText.error(
+        dateErrorText ? "Choose a Date for this Transaction." : '',
+      )
     ]);
   }
 
@@ -198,7 +194,7 @@ class _NewTransactionState extends State<NewTransaction> {
             children: [
               InputType(
                   value: _income,
-                  checkColor: kGreen,
+                  checkColor: kGreenColor,
                   onChanged: (value) {
                     setState(() {
                       _income = value;
@@ -212,7 +208,7 @@ class _NewTransactionState extends State<NewTransaction> {
                   }),
               InputType(
                   text: "Expense",
-                  checkColor: kRed,
+                  checkColor: kRedColor,
                   value: _expense,
                   onChanged: (value) {
                     setState(() {
@@ -241,10 +237,11 @@ class _NewTransactionState extends State<NewTransaction> {
                     });
                   }),
             ]),
-        vSpaceNormal,
-        Text(typeErrorText ? "The transaction type is required." : '',
-            style: const TextStyle(
-                color: kRed, fontSize: 12, fontWeight: FontWeight.w600))
+        vSpaceSmall,
+        EgoText.error(
+          typeErrorText ? "The transaction type is required." : '',
+          color: kRedColor,
+        )
       ]),
     );
   }
@@ -288,8 +285,7 @@ class InputType extends StatelessWidget {
           onChanged: (value) => onChanged(value),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
-      Text(text,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400))
+      EgoText.caption(text),
     ]);
   }
 }
@@ -321,8 +317,7 @@ class Input extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: Icon(icon, size: 32, color: iconColor),
-          errorStyle:
-              const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+          errorStyle: errorStyle,
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(50.0))),
           focusedBorder: OutlineInputBorder(

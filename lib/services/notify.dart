@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ego/util/app_colors.dart';
+import 'package:ego/widgets/ego_text.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -25,9 +26,7 @@ class Notify {
           style: TextStyle(
               fontSize: title.isNotEmpty ? 14 : 0, fontWeight: FontWeight.w800),
           textAlign: TextAlign.center),
-      messageText: Text('Transaction $action Successfully!',
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
-          textAlign: TextAlign.center),
+      messageText: EgoText.alert('Transaction $action Successfully!'),
     ).show(context);
   }
 
@@ -47,7 +46,7 @@ class Notify {
         ),
       ),
       titleStyle: const TextStyle(
-        color: Colors.red,
+        color: kRedColor,
       ),
       alertAlignment: Alignment.center,
     );
@@ -63,21 +62,15 @@ class Notify {
           border: Border.fromBorderSide(BorderSide(
               color: Colors.white.withOpacity(0.4), style: BorderStyle.solid)),
           onPressed: () => Navigator.pop(context),
-          child: const Text(
-            "Cancel",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
+          child: EgoText.action("Cancel"),
         ),
         DialogButton(
-          color: kRed,
+          color: kRedColor,
           onPressed: () {
             Navigator.pop(context);
             actionFunction(context, index);
           },
-          child: const Text(
-            "Delete",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
+          child: EgoText.action("Delete"),
         )
       ],
     ).show();
