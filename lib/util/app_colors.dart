@@ -13,4 +13,4 @@ const kGreenColor = Color.fromARGB(255, 21, 207, 27);
 const kBgGreen = Color.fromARGB(255, 204, 255, 206);
 const kRedColor = Color.fromARGB(255, 255, 72, 72);
 const kBgRed = Color.fromARGB(255, 255, 188, 188);
-const Color kMediumGreyColor = Color(0xff868686);
+const Color kMediumGreyColor = Color.fromARGB(255, 175, 175, 175);

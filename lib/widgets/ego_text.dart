@@ -9,14 +9,16 @@ class EgoText extends StatelessWidget {
 
 
   EgoText.headline(this.text,
-      {Key? key, String? font, TextAlign align = TextAlign.start})
-      : style = headlineStyle.copyWith(fontFamily: font),
+      {Key? key, String? font, Color? color, TextAlign align = TextAlign.start})
+      : style = headlineStyle.copyWith(fontFamily: font, color: color),
         alignment = align,
         super(key: key);
 
-  const EgoText.subheading(this.text,
-      {Key? key, TextAlign align = TextAlign.start})
-      : style = subheadingStyle,
+  EgoText.subheading(this.text,
+      {Key? key,
+      Color color = kPrimaryColor,
+      TextAlign align = TextAlign.start})
+      : style = subheadingStyle.copyWith(color: color),
         alignment = align,
         super(key: key);
 
@@ -35,7 +37,7 @@ class EgoText extends StatelessWidget {
   EgoText.action(
     this.text, {
     Key? key,
-    Color? color,
+    Color color = kSwatch5,
     TextAlign align = TextAlign.start,
   })  : style = actionStyle.copyWith(color: color),
         alignment = align,

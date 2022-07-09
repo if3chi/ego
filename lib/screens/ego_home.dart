@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ego/screens/about.dart';
 import 'package:ego/widgets/top_bar.dart';
 import 'package:ego/util/ui_helpers.dart';
 import 'package:ego/util/app_colors.dart';
@@ -115,6 +116,13 @@ class _EgoHomeState extends State<EgoHome> {
           color: kSwatch0,
           child: SizedBox(
             height: screenHeightPercent(context, percentage: 0.07),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [About()],
+              ),
+            ),
           )),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

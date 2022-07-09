@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+Image appLogo = Image.asset('assets/images/logo.png');
+
 double screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
 double screenHeight(BuildContext context) => MediaQuery.of(context).size.height;
 
