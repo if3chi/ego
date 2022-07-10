@@ -100,7 +100,7 @@ class _AboutEgoDialogState extends State<AboutEgoDialog> {
                     vSpaceLarge,
                     TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: EgoText.action('close'))
+                        child: EgoText.action('close', color: kSwatch5))
                   ],
                 ),
               ),

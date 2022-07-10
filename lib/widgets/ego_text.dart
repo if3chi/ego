@@ -7,7 +7,6 @@ class EgoText extends StatelessWidget {
   final TextStyle style;
   final TextAlign alignment;
 
-
   EgoText.headline(this.text,
       {Key? key, String? font, Color? color, TextAlign align = TextAlign.start})
       : style = headlineStyle.copyWith(fontFamily: font, color: color),
@@ -37,7 +36,7 @@ class EgoText extends StatelessWidget {
   EgoText.action(
     this.text, {
     Key? key,
-    Color color = kSwatch5,
+    Color? color,
     TextAlign align = TextAlign.start,
   })  : style = actionStyle.copyWith(color: color),
         alignment = align,
