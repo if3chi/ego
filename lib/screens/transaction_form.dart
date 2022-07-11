@@ -6,30 +6,68 @@ import 'package:ego/services/notify.dart';
 import 'package:ego/util/app_colors.dart';
 import 'package:ego/widgets/ego_text.dart';
 import 'package:ego/models/transaction.dart';
+import 'package:ego/widgets/form_button.dart';
 import 'package:ego/services/string_casing_ext.dart';
 
-class NewTransaction extends StatefulWidget {
-  const NewTransaction({Key? key, required this.addTransaction})
+class TransactionForm extends StatefulWidget {
+  const TransactionForm(this.actionFunction,
+      {Key? key, this.transaction, this.formType = 'create'})
       : super(key: key);
-  final Function addTransaction;
+
+  final String formType;
+  final Function actionFunction;
+  final Transaction? transaction;
 
   @override
-  State<NewTransaction> createState() => _NewTransactionState();
+  State<TransactionForm> createState() => _TransactionFormState();
 }
 
-class _NewTransactionState extends State<NewTransaction> {
+class _TransactionFormState extends State<TransactionForm> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
 
-  bool _income = false;
+  bool get isUpdating => widget.formType == Transaction.update;
+
   bool _expense = false;
+  bool _income = false;
   bool _debt = false;
   String _txType = "";
   bool hasDate = false;
+  late DateTime _chosenDate;
   bool dateErrorText = false;
   bool typeErrorText = false;
-  late DateTime _chosenDate;
+
+  String? formButtonText;
+  String? formActionText;
+  String? formHeadlineText;
+
+  void setFormTexts() {
+    if (isUpdating) {
+      formButtonText = 'Update';
+      formActionText = 'Updated';
+      formHeadlineText = 'Update Transaction';
+    } else {
+      formButtonText = 'Add';
+      formActionText = 'Added';
+      formHeadlineText = 'Add Transaction';
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (isUpdating) {
+      _amountController.text = widget.transaction!.amount.toString();
+      _titleController.text = widget.transaction!.title;
+      _chosenDate = widget.transaction!.date;
+      hasDate = true;
+      _txType = widget.transaction!.type;
+      _debt = _txType == Transaction.debt;
+      _income = _txType == Transaction.income;
+      _expense = _txType == Transaction.expense;
+    }
+  }
 
   void _openDatePicker() {
     showDatePicker(
@@ -66,8 +104,11 @@ class _NewTransactionState extends State<NewTransaction> {
     if (_formKey.currentState!.validate()) {
       if (!hasDate || _txType.isEmpty) return;
 
-      widget.addTransaction(Transaction(
-          id: Random(2022).nextInt(100),
+      int transactionId =
+          isUpdating ? widget.transaction!.id : Random(2022).nextInt(100);
+
+      widget.actionFunction(Transaction(
+          id: transactionId,
           title: _titleController.text.toTitleCase(),
           type: _txType,
           amount: double.parse(_amountController.text),
@@ -76,14 +117,16 @@ class _NewTransactionState extends State<NewTransaction> {
       Navigator.of(context).pop();
       Notify.show(
           context: context,
-          action: 'Added',
+          action: formActionText!,
           title: _titleController.text.toTitleCase());
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    setFormTexts();
     var iconColor = kSwatch5.withOpacity(0.40);
+
     return Container(
       padding: EdgeInsets.only(
           top: 32,
@@ -101,7 +144,7 @@ class _NewTransactionState extends State<NewTransaction> {
             colors: [kSwatch3.withOpacity(0.9), kSwatch0.withOpacity(0.9)]),
       ),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
-        EgoText.headline("Add Transaction"),
+        EgoText.headline(formHeadlineText!),
         vSpaceMedium,
         Form(
             key: _formKey,
@@ -133,16 +176,19 @@ class _NewTransactionState extends State<NewTransaction> {
                         inputType: TextInputType.text),
                     vSpaceMedium,
                   ]),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(2),
-                      backgroundColor: MaterialStateProperty.all(kAccentColor),
-                      padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 8)),
+                  Container(
+                    margin: const EdgeInsets.all(4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FormButton(color: kSwatch0.withOpacity(0.2)),
+                        hSpaceNormal,
+                        FormButton(
+                            text: formButtonText!,
+                            color: kSwatch5,
+                            buttonAction: submitData)
+                      ],
                     ),
-                    onPressed: submitData,
-                    child: EgoText.action('Add'),
                   )
                 ]))
       ]),
@@ -158,29 +204,12 @@ class _NewTransactionState extends State<NewTransaction> {
             EgoText.caption(hasDate
                 ? "Chosen Date: ${dateFormat.format(_chosenDate)}"
                 : 'Pick a Date:'),
-            TextButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(kAccentColor),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.hovered)) {
-                        return kAccentColor.withOpacity(0.04);
-                      }
-                      if (states.contains(MaterialState.focused) ||
-                          states.contains(MaterialState.pressed)) {
-                        return kAccentColor.withOpacity(0.12);
-                      }
-                      return null; // Defer to the widget's default.
-                    })),
-                onPressed: _openDatePicker,
-                child: EgoText.action('Choose Date'))
+            FormButton(
+                text: 'Choose Date',
+                color: kSwatch5,
+                buttonAction: _openDatePicker)
           ])),
-      EgoText.error(
-        dateErrorText ? "Choose a Date for this Transaction." : '',
-      )
+      EgoText.error(dateErrorText ? "Choose a Date for this Transaction." : '')
     ]);
   }
 
@@ -203,6 +232,8 @@ class _NewTransactionState extends State<NewTransaction> {
                         _debt = !value;
                         _txType = Transaction.income;
                         typeErrorText = !value;
+                      } else {
+                        _txType = '';
                       }
                     });
                   }),
@@ -218,6 +249,8 @@ class _NewTransactionState extends State<NewTransaction> {
                         _debt = !value;
                         _txType = Transaction.expense;
                         typeErrorText = !value;
+                      } else {
+                        _txType = '';
                       }
                     });
                   }),
@@ -233,6 +266,8 @@ class _NewTransactionState extends State<NewTransaction> {
                         _expense = !value;
                         _txType = Transaction.debt;
                         typeErrorText = !value;
+                      } else {
+                        _txType = '';
                       }
                     });
                   }),

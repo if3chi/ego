@@ -12,9 +12,9 @@ class AnalyticsCard extends StatelessWidget {
 
   const AnalyticsCard({
     Key? key,
+    required this.total,
     required this.totalIncome,
     required this.totalExpenses,
-    required this.total,
     required this.recentTransactions,
   }) : super(key: key);
 
@@ -24,13 +24,11 @@ class AnalyticsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlassCard(
       cardChild: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Chart(recentTransactions: recentTransactions),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Chart(recentTransactions: recentTransactions),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               NeuSummaryCard(
                 textType: "Income",
                 percentage: getPercentage(totalIncome),
@@ -42,10 +40,8 @@ class AnalyticsCard extends StatelessWidget {
                 isPositive: false,
                 total: totalExpenses,
               ),
-            ],
-          )
-        ],
-      ),
+            ])
+          ]),
     );
   }
 }

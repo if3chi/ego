@@ -8,6 +8,8 @@ final DateFormat dateFormat = DateFormat("MMM, E d, yy.");
 final NumberFormat numberFormat = NumberFormat("#,##0.00", "en_US");
 final NumberFormat compactFromat = NumberFormat.compact();
 
+const SizedBox hSpaceNormal = SizedBox(width: 10.0);
+
 const SizedBox vSpaceMicro = SizedBox(height: 2.0);
 const SizedBox vSpaceTiny = SizedBox(height: 4.0);
 const SizedBox vSpaceSmall = SizedBox(height: 8.0);

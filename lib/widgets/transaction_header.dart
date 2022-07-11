@@ -13,29 +13,25 @@ class TransactionHeader extends StatelessWidget {
       fontSize: 13,
       fontWeight: FontWeight.w800,
     );
-    return Container(
-      margin: const EdgeInsets.only(top: 8.0),
-      child: Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 26.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Transactions",
-                style: actionTextStyle,
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  primary: kSwatch5,
-                  onSurface: Colors.red,
-                ),
-                onPressed: () {},
-                child: const Text(
-                  "View All",
-                  style: actionTextStyle,
-                ),
-              )
-            ],
+          const Text(
+            "Transactions",
+            style: actionTextStyle,
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              primary: kSwatch5,
+              onSurface: Colors.red,
+            ),
+            onPressed: () {},
+            child: const Text(
+              "View All",
+              style: actionTextStyle,
+            ),
           )
         ],
       ),

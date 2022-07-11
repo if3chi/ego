@@ -35,7 +35,7 @@ class Chart extends StatelessWidget {
     return Card(
       color: Colors.transparent,
       shadowColor: Colors.transparent,
-      margin: const EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
+      margin: const EdgeInsets.only(bottom: 5.0, left: 8.0, right: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -75,8 +75,8 @@ class ChartBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: 10,
-          height: 80,
+          width: 8,
+          height: 60,
           child: Stack(
             children: [
               Container(

@@ -5,10 +5,9 @@ import 'package:ego/util/ui_helpers.dart';
 import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/widgets/analytics_card.dart';
-import 'package:ego/widgets/new_transaction.dart';
+import 'package:ego/screens/transaction_form.dart';
 import 'package:ego/widgets/transactions_list.dart';
 import 'package:ego/widgets/transaction_header.dart';
-import 'package:ego/widgets/update_transaction.dart';
 import 'package:ego/services/transaction_storage.dart';
 
 class EgoHome extends StatefulWidget {
@@ -43,7 +42,7 @@ class _EgoHomeState extends State<EgoHome> {
     }).toList();
   }
 
-  void update(Transaction transaction) {
+  void _updateTransactionFn(Transaction transaction) {
     setState(() {
       var tx = _transactions.singleWhere((tx) => tx.id == transaction.id);
       tx.id = transaction.id;
@@ -56,7 +55,7 @@ class _EgoHomeState extends State<EgoHome> {
     widget.storage.writeToFile(_transactions);
   }
 
-  bool deleteTransaction(int transactionId) {
+  bool _deleteTransactionFn(int transactionId) {
     bool isDeleted = false;
 
     setState(() {
@@ -75,7 +74,7 @@ class _EgoHomeState extends State<EgoHome> {
     totalTx = totalIncome + totalExpenses;
   }
 
-  void _addNewTransaction(Transaction transaction) {
+  void _addNewTransactionFn(Transaction transaction) {
     transaction.id = _transactions.length + 1;
 
     setState(() {
@@ -91,11 +90,10 @@ class _EgoHomeState extends State<EgoHome> {
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (_) => SizedBox(
-            child: editType == Transaction.update
-                ? UpdateTransaction(
-                    updateTransaction: update, transaction: transaction)
-                : NewTransaction(addTransaction: _addNewTransaction)));
+        builder: (_) => editType == Transaction.update
+            ? TransactionForm(_updateTransactionFn,
+                transaction: transaction, formType: Transaction.update)
+            : TransactionForm(_addNewTransactionFn));
   }
 
   @override
@@ -111,46 +109,44 @@ class _EgoHomeState extends State<EgoHome> {
           child: const Icon(Icons.add, size: 24, color: Colors.white)),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 10,
-          color: kSwatch0,
-          child: SizedBox(
-            height: screenHeightPercent(context, percentage: 0.07),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 10,
+        color: kSwatch0,
+        child: SizedBox(
+          height: screenHeightPercent(context, percentage: 0.07),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: const [About()],
-              ),
-            ),
-          )),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: screenHeightPercent(context, percentage: 0.425),
-            padding: const EdgeInsets.symmetric(horizontal: 26),
-            child: Column(
-              children: [
-                TopBar(),
-                AnalyticsCard(
-                    totalIncome: totalIncome,
-                    totalExpenses: totalExpenses,
-                    total: totalIncome + totalExpenses,
-                    recentTransactions: _recentTransactions),
-                const TransactionHeader()
-              ],
-            ),
+                children: const [About()]),
           ),
-          SizedBox(
-              height: screenHeightPercent(context, percentage: 0.47),
-              child: TransactionsList(
-                transactions: (_transactions.reversed).toList(),
-                updateAction: _showTransactionModal,
-                deleteAction: deleteTransaction,
-              ))
-        ],
+        ),
       ),
+      body: Column(children: [
+        Container(
+          height: screenHeightPercent(context, percentage: 0.35),
+          padding: const EdgeInsets.symmetric(horizontal: 26),
+          child: Column(
+            children: [
+              TopBar(),
+              AnalyticsCard(
+                  totalIncome: totalIncome,
+                  totalExpenses: totalExpenses,
+                  total: totalIncome + totalExpenses,
+                  recentTransactions: _recentTransactions),
+            ],
+          ),
+        ),
+        const TransactionHeader(),
+        SizedBox(
+          height: screenHeightPercent(context, percentage: 0.493),
+          child: TransactionsList(
+            transactions: (_transactions.reversed).toList(),
+            updateAction: _showTransactionModal,
+            deleteAction: _deleteTransactionFn,
+          ),
+        )
+      ]),
     );
   }
 }
