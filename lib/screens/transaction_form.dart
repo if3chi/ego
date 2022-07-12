@@ -141,11 +141,12 @@ class _TransactionFormState extends State<TransactionForm> {
         gradient: LinearGradient(
             begin: Alignment.bottomRight,
             end: Alignment.topLeft,
-            colors: [kSwatch3.withOpacity(0.9), kSwatch0.withOpacity(0.9)]),
+            colors: [kSwatch0.withOpacity(0.9), kSwatch6]),
       ),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         EgoText.headline(formHeadlineText!),
-        vSpaceMedium,
+        vSpaceNormal,
+        vSpaceForm,
         Form(
             key: _formKey,
             child: Column(
@@ -163,25 +164,28 @@ class _TransactionFormState extends State<TransactionForm> {
                           inputType: const TextInputType.numberWithOptions(
                               decimal: true, signed: true),
                         )),
-                    vSpaceMedium,
+                    vSpaceForm,
                     checkBoxes(),
-                    vSpaceMedium,
+                    vSpaceTiny,
+                    vSpaceSmall,
                     dateWidget(),
-                    vSpaceMedium,
+                    vSpaceForm,
                     Input(
                         hintText: "Enter a transaction Title",
                         iconColor: iconColor,
                         inputValidator: titleValidator,
                         editingController: _titleController,
                         inputType: TextInputType.text),
-                    vSpaceMedium,
+                    vSpaceForm,
                   ]),
                   Container(
                     margin: const EdgeInsets.all(4),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        FormButton(color: kSwatch0.withOpacity(0.2)),
+                        FormButton(
+                            color: kDarkGreyColor.withOpacity(0.6),
+                            outlined: true),
                         hSpaceNormal,
                         FormButton(
                             text: formButtonText!,
@@ -197,18 +201,32 @@ class _TransactionFormState extends State<TransactionForm> {
 
   Column dateWidget() {
     return Column(children: [
-      Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            EgoText.caption(hasDate
-                ? "Chosen Date: ${dateFormat.format(_chosenDate)}"
-                : 'Pick a Date:'),
+      EgoText.caption(hasDate
+          ? "Chosen Date: ${dateFormat.format(_chosenDate)}"
+          : 'Pick a Date:'),
+      vSpaceTiny,
+      Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FormButton(
+                text: 'Today?',
+                color: kSwatch2.withOpacity(0.3),
+                buttonAction: () {
+                  setState(() {
+                    _chosenDate = DateTime.now();
+                    hasDate = true;
+                    dateErrorText = !hasDate;
+                  });
+                }),
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: EgoText.body('or', color: Colors.white)),
             FormButton(
                 text: 'Choose Date',
-                color: kSwatch5,
+                color: kSwatch2.withOpacity(0.2),
                 buttonAction: _openDatePicker)
-          ])),
+          ]),
       EgoText.error(dateErrorText ? "Choose a Date for this Transaction." : '')
     ]);
   }
@@ -354,9 +372,9 @@ class Input extends StatelessWidget {
           prefixIcon: Icon(icon, size: 32, color: iconColor),
           errorStyle: errorStyle,
           border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50.0),
+              borderRadius: BorderRadius.circular(10.0),
               borderSide: BorderSide(width: 3, color: iconColor)),
         ),
         keyboardType: inputType,

@@ -23,12 +23,18 @@ class EgoApp extends StatelessWidget {
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-                begin: Alignment.bottomRight,
-                end: Alignment.topLeft,
-                colors: [
-                  kSwatch0,
-                  kPrimaryColor,
-                ]),
+              begin: Alignment.bottomRight,
+              end: Alignment.topCenter,
+              colors: [
+                kPrimaryColor,
+                kSwatch0,
+                kSwatch6,
+                kSwatch0,
+                kPrimaryColor,
+                kPrimaryColor,
+                kSwatch6
+              ],
+            ),
           ),
           child: SafeArea(
             child: EgoHome(),

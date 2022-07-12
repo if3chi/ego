@@ -7,22 +7,33 @@ class FormButton extends StatelessWidget {
       {Key? key,
       this.buttonAction,
       this.text = 'Cancel',
-      this.color = kSwatch0})
+      this.color = kSwatch5,
+      this.outlined = false})
       : super(key: key);
 
   final String text;
   final Color color;
+  final bool outlined;
   final VoidCallback? buttonAction;
 
   @override
   Widget build(BuildContext context) {
+    const padding = EdgeInsets.symmetric(horizontal: 18, vertical: 8);
+
+    ButtonStyle outlineStyle = OutlinedButton.styleFrom(
+        elevation: 2,
+        backgroundColor: Colors.transparent,
+        side: const BorderSide(color: Colors.white),
+        padding: padding);
+
     return ElevatedButton(
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all(2),
-        backgroundColor: MaterialStateProperty.all(color),
-        padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(horizontal: 18, vertical: 8)),
-      ),
+      style: outlined
+          ? outlineStyle
+          : ElevatedButton.styleFrom(
+              elevation: 3,
+              primary: color,
+              shadowColor: color,
+              padding: padding),
       onPressed: buttonAction ?? () => Navigator.pop(context),
       child: EgoText.action(text),
     );
