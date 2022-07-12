@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 const TextStyle headlineStyle = TextStyle(
   fontSize: 30,
   fontWeight: FontWeight.w700,
@@ -16,15 +15,15 @@ const TextStyle bodyStyle = TextStyle(
   fontWeight: FontWeight.w400,
 );
 
-const TextStyle alertStyle = TextStyle(
-  fontSize: 12,
-  fontWeight: FontWeight.w800,
-);
-
 const TextStyle actionStyle = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.bold,
   letterSpacing: 0.5,
+);
+
+const TextStyle alertStyle = TextStyle(
+  fontSize: 12,
+  fontWeight: FontWeight.w800,
 );
 
 const TextStyle captionStyle = TextStyle(

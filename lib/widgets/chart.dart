@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ego/util/constants.dart';
 import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
+import 'package:ego/services/date_service.dart';
 
 class Chart extends StatelessWidget {
   const Chart({Key? key, required this.recentTransactions}) : super(key: key);
@@ -42,7 +43,7 @@ class Chart extends StatelessWidget {
           ...sevenDaysTransactions.reversed.map((tx) {
             return ChartBar(
               label: tx['day'].toString(),
-              amount: compactFromat.format(tx['amount']),
+              amount: DateService.compactFromat.format(tx['amount']),
               isToday: tx['isToday'] as bool,
               pctOfAmount: totalAmount == 0.0
                   ? 0.0

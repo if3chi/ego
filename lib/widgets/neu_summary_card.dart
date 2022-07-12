@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ego/util/constants.dart';
 import 'package:ego/util/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ego/services/date_service.dart';
 
 class NeuSummaryCard extends StatelessWidget {
   final double total;
@@ -83,7 +84,7 @@ class NeuSummaryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                "₵ ${compactFromat.format(total)}",
+                "₵ ${DateService.compactFromat.format(total)}",
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),

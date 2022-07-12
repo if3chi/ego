@@ -4,6 +4,7 @@ import 'package:ego/widgets/top_bar.dart';
 import 'package:ego/util/ui_helpers.dart';
 import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
+import 'package:ego/services/date_service.dart';
 import 'package:ego/widgets/analytics_card.dart';
 import 'package:ego/screens/transaction_form.dart';
 import 'package:ego/widgets/transactions_list.dart';
@@ -35,8 +36,14 @@ class _EgoHomeState extends State<EgoHome> {
     });
   }
 
-  List<Transaction> get _recentTransactions {
+  List<Transaction> get _transactionsThisMonth {
     return _transactions.where((transaction) {
+      return transaction.date.isAfter(DateService.pastMonth);
+    }).toList();
+  }
+
+  List<Transaction> get _recentTransactions {
+    return _transactionsThisMonth.where((transaction) {
       return transaction.date
           .isAfter(DateTime.now().subtract(const Duration(days: 7)));
     }).toList();
@@ -141,7 +148,7 @@ class _EgoHomeState extends State<EgoHome> {
         SizedBox(
           height: screenHeightPercent(context, percentage: 0.493),
           child: TransactionsList(
-            transactions: (_transactions.reversed).toList(),
+            transactions: (_transactionsThisMonth.reversed).toList(),
             updateAction: _showTransactionModal,
             deleteAction: _deleteTransactionFn,
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ego/util/constants.dart';
 import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';
+import 'package:ego/services/date_service.dart';
 
 class TransactionCard extends StatelessWidget {
   const TransactionCard({
@@ -43,7 +44,7 @@ class TransactionCard extends StatelessWidget {
                 height: 3.0,
               ),
               Text(
-                dateFormat.format(txDate),
+                DateService.dateFormat.format(txDate),
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
@@ -88,7 +89,7 @@ class AmountText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      "${isIncome ? "+" : "-"}\$${numberFormat.format(amount)}",
+      "${isIncome ? "+" : "-"}\$${DateService.numberFormat.format(amount)}",
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: isIncome ? kGreenColor : kRedColor,

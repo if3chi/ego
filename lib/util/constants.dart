@@ -1,12 +1,7 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:ego/util/app_colors.dart';
 
 const appName = 'Ego';
-
-final DateFormat dateFormat = DateFormat("MMM, E d, yy.");
-final NumberFormat numberFormat = NumberFormat("#,##0.00", "en_US");
-final NumberFormat compactFromat = NumberFormat.compact();
 
 const SizedBox hSpaceNormal = SizedBox(width: 10.0);
 
@@ -18,6 +13,8 @@ const SizedBox vSpaceForm = SizedBox(height: 16.0);
 const SizedBox vSpaceMedium = SizedBox(height: 24.0);
 const SizedBox vSpaceLarge = SizedBox(height: 32.0);
 const SizedBox vSpaceXLarge = SizedBox(height: 64.0);
+
+const SizedBox shrikSpace = SizedBox.shrink();
 
 List<BoxShadow> kBoxShadow = [
   BoxShadow(

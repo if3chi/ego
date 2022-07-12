@@ -7,6 +7,7 @@ import 'package:ego/util/app_colors.dart';
 import 'package:ego/widgets/ego_text.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/widgets/form_button.dart';
+import 'package:ego/services/date_service.dart';
 import 'package:ego/services/string_casing_ext.dart';
 
 class TransactionForm extends StatefulWidget {
@@ -202,7 +203,7 @@ class _TransactionFormState extends State<TransactionForm> {
   Column dateWidget() {
     return Column(children: [
       EgoText.caption(hasDate
-          ? "Chosen Date: ${dateFormat.format(_chosenDate)}"
+          ? "Chosen Date: ${DateService.dateFormat.format(_chosenDate)}"
           : 'Pick a Date:'),
       vSpaceTiny,
       Row(
@@ -227,7 +228,9 @@ class _TransactionFormState extends State<TransactionForm> {
                 color: kSwatch2.withOpacity(0.2),
                 buttonAction: _openDatePicker)
           ]),
-      EgoText.error(dateErrorText ? "Choose a Date for this Transaction." : '')
+      dateErrorText
+          ? EgoText.error("Choose a Date for this Transaction.")
+          : shrikSpace
     ]);
   }
 
@@ -291,10 +294,10 @@ class _TransactionFormState extends State<TransactionForm> {
                   }),
             ]),
         vSpaceSmall,
-        EgoText.error(
-          typeErrorText ? "The transaction type is required." : '',
-          color: kRedColor,
-        )
+        typeErrorText
+            ? EgoText.error("The transaction type is required.",
+                color: kRedColor)
+            : shrikSpace
       ]),
     );
   }
