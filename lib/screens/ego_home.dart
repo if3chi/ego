@@ -53,6 +53,7 @@ class _EgoHomeState extends State<EgoHome> {
     setState(() {
       var tx = _transactions.singleWhere((tx) => tx.id == transaction.id);
       tx.id = transaction.id;
+      tx.categoryId = transaction.categoryId;
       tx.title = transaction.title;
       tx.type = transaction.type;
       tx.amount = transaction.amount;

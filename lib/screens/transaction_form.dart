@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:ego/util/constants.dart';
 import 'package:ego/services/notify.dart';
 import 'package:ego/util/app_colors.dart';
+import 'package:ego/models/category.dart';
 import 'package:ego/widgets/ego_text.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/widgets/form_button.dart';
 import 'package:ego/services/date_service.dart';
+import 'package:ego/screens/category_modal.dart';
 import 'package:ego/services/string_casing_ext.dart';
 
 class TransactionForm extends StatefulWidget {
@@ -38,10 +40,14 @@ class _TransactionFormState extends State<TransactionForm> {
   late DateTime _chosenDate;
   bool dateErrorText = false;
   bool typeErrorText = false;
+  bool _categoryIdErrorText = false;
 
   String? formButtonText;
   String? formActionText;
   String? formHeadlineText;
+
+  int? _categoryId;
+  String _categoryName = "Select Transaction Category";
 
   void setFormTexts() {
     if (isUpdating) {
@@ -61,12 +67,14 @@ class _TransactionFormState extends State<TransactionForm> {
     if (isUpdating) {
       _amountController.text = widget.transaction!.amount.toString();
       _titleController.text = widget.transaction!.title;
+      _categoryId = widget.transaction!.categoryId;
       _chosenDate = widget.transaction!.date;
       hasDate = true;
       _txType = widget.transaction!.type;
       _debt = _txType == Transaction.debt;
       _income = _txType == Transaction.income;
       _expense = _txType == Transaction.expense;
+      _categoryName = categoryName(Category.getCategoryName(_categoryId!));
     }
   }
 
@@ -86,6 +94,26 @@ class _TransactionFormState extends State<TransactionForm> {
     });
   }
 
+  void _openCategoryForm() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => CategoryModal(
+              setCategory: setSelectCategory,
+            ));
+  }
+
+  void setSelectCategory(Category selectedCategory) {
+    setState(() {
+      _categoryId = selectedCategory.id;
+      _categoryName = categoryName(selectedCategory.name);
+      _categoryIdErrorText = false;
+    });
+  }
+
+  String categoryName(category) => "Category: $category";
+
   void validator() {
     if (!hasDate) {
       setState(() {
@@ -97,19 +125,25 @@ class _TransactionFormState extends State<TransactionForm> {
         typeErrorText = _txType.isEmpty;
       });
     }
+    if (_categoryId == null) {
+      setState(() {
+        _categoryIdErrorText = true;
+      });
+    }
     return;
   }
 
   void submitData() {
     validator();
     if (_formKey.currentState!.validate()) {
-      if (!hasDate || _txType.isEmpty) return;
+      if (!hasDate || _txType.isEmpty || _categoryId == null) return;
 
       int transactionId =
           isUpdating ? widget.transaction!.id : Random(2022).nextInt(100);
 
       widget.actionFunction(Transaction(
           id: transactionId,
+          categoryId: _categoryId!,
           title: _titleController.text.toTitleCase(),
           type: _txType,
           amount: double.parse(_amountController.text),
@@ -131,8 +165,8 @@ class _TransactionFormState extends State<TransactionForm> {
     return Container(
       padding: EdgeInsets.only(
           top: 32,
-          right: 32,
-          left: 32,
+          right: 12,
+          left: 12,
           bottom: MediaQuery.of(context).viewInsets.bottom + 10),
       width: double.infinity,
       decoration: BoxDecoration(
@@ -154,22 +188,15 @@ class _TransactionFormState extends State<TransactionForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(children: [
-                    SizedBox(
-                        width: 200,
-                        child: Input(
-                          icon: Icons.money,
-                          hintText: "00.00",
-                          iconColor: iconColor,
-                          inputValidator: amountValidator,
-                          editingController: _amountController,
-                          inputType: const TextInputType.numberWithOptions(
-                              decimal: true, signed: true),
-                        )),
-                    vSpaceForm,
-                    checkBoxes(),
-                    vSpaceTiny,
-                    vSpaceSmall,
-                    dateWidget(),
+                    Input(
+                      icon: Icons.money,
+                      hintText: "00.00",
+                      iconColor: iconColor,
+                      inputValidator: amountValidator,
+                      editingController: _amountController,
+                      inputType: const TextInputType.numberWithOptions(
+                          decimal: true, signed: true),
+                    ),
                     vSpaceForm,
                     Input(
                         hintText: "Enter a transaction Title",
@@ -177,6 +204,20 @@ class _TransactionFormState extends State<TransactionForm> {
                         inputValidator: titleValidator,
                         editingController: _titleController,
                         inputType: TextInputType.text),
+                    vSpaceForm,
+                    FormButton(
+                        buttonAction: _openCategoryForm,
+                        text: _categoryName,
+                        color: kDarkGreyColor.withOpacity(0.6),
+                        outlined: true),
+                    _categoryIdErrorText
+                        ? EgoText.error("Kindly select a category")
+                        : shrikSpace,
+                    vSpaceForm,
+                    checkBoxes(),
+                    vSpaceTiny,
+                    vSpaceSmall,
+                    dateWidget(),
                     vSpaceForm,
                   ]),
                   Container(
@@ -234,72 +275,68 @@ class _TransactionFormState extends State<TransactionForm> {
     ]);
   }
 
-  SizedBox checkBoxes() {
-    return SizedBox(
-      width: 250,
-      child: Column(children: [
-        Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              InputType(
-                  value: _income,
-                  checkColor: kGreenColor,
-                  onChanged: (value) {
-                    setState(() {
-                      _income = value;
-                      if (_income) {
-                        _expense = !value;
-                        _debt = !value;
-                        _txType = Transaction.income;
-                        typeErrorText = !value;
-                      } else {
-                        _txType = '';
-                      }
-                    });
-                  }),
-              InputType(
-                  text: "Expense",
-                  checkColor: kRedColor,
-                  value: _expense,
-                  onChanged: (value) {
-                    setState(() {
-                      _expense = value;
-                      if (_expense) {
-                        _income = !value;
-                        _debt = !value;
-                        _txType = Transaction.expense;
-                        typeErrorText = !value;
-                      } else {
-                        _txType = '';
-                      }
-                    });
-                  }),
-              InputType(
-                  text: "Debt",
-                  checkColor: Colors.amber,
-                  value: _debt,
-                  onChanged: (value) {
-                    setState(() {
-                      _debt = value;
-                      if (_debt) {
-                        _income = !value;
-                        _expense = !value;
-                        _txType = Transaction.debt;
-                        typeErrorText = !value;
-                      } else {
-                        _txType = '';
-                      }
-                    });
-                  }),
-            ]),
-        vSpaceSmall,
-        typeErrorText
-            ? EgoText.error("The transaction type is required.",
-                color: kRedColor)
-            : shrikSpace
-      ]),
-    );
+  Column checkBoxes() {
+    return Column(children: [
+      Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InputType(
+                value: _income,
+                checkColor: kGreenColor,
+                onChanged: (value) {
+                  setState(() {
+                    _income = value;
+                    if (_income) {
+                      _expense = !value;
+                      _debt = !value;
+                      _txType = Transaction.income;
+                      typeErrorText = !value;
+                    } else {
+                      _txType = '';
+                    }
+                  });
+                }),
+            InputType(
+                text: "Expense",
+                checkColor: kRedColor,
+                value: _expense,
+                onChanged: (value) {
+                  setState(() {
+                    _expense = value;
+                    if (_expense) {
+                      _income = !value;
+                      _debt = !value;
+                      _txType = Transaction.expense;
+                      typeErrorText = !value;
+                    } else {
+                      _txType = '';
+                    }
+                  });
+                }),
+            InputType(
+                text: "Debt",
+                checkColor: Colors.amber,
+                value: _debt,
+                onChanged: (value) {
+                  setState(() {
+                    _debt = value;
+                    if (_debt) {
+                      _income = !value;
+                      _expense = !value;
+                      _txType = Transaction.debt;
+                      typeErrorText = !value;
+                    } else {
+                      _txType = '';
+                    }
+                  });
+                }),
+          ]),
+      vSpaceSmall,
+      typeErrorText
+          ? EgoText.error("The transaction type is required.", color: kRedColor)
+          : shrikSpace
+    ]);
   }
 
   String? amountValidator(value) {
@@ -334,13 +371,13 @@ class InputType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Row(children: [
       Checkbox(
-          value: value,
-          activeColor: checkColor,
-          onChanged: (value) => onChanged(value),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+        value: value,
+        activeColor: checkColor,
+        onChanged: (value) => onChanged(value),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      ),
       EgoText.caption(text),
     ]);
   }

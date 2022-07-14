@@ -1,5 +1,6 @@
 class Transaction {
   int id;
+  int categoryId;
   String title;
   double amount;
   String type;
@@ -14,6 +15,7 @@ class Transaction {
 
   Transaction(
       {required this.id,
+      required this.categoryId,
       required this.title,
       required this.type,
       required this.amount,
@@ -21,6 +23,7 @@ class Transaction {
 
   Transaction.fromJson(Map<String, dynamic> json)
       : id = json["id"],
+        categoryId = json["categoryId"],
         title = json["title"],
         type = json["type"],
         amount = json["amount"],
@@ -28,6 +31,7 @@ class Transaction {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "categoryId": categoryId,
         "title": title,
         "type": type,
         "amount": amount,
