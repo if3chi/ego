@@ -49,36 +49,63 @@ class _CategoryModalState extends State<CategoryModal> {
                   crossAxisCount: 3),
               children: [
                 ...categories.map((category) => Container(
-                      margin: const EdgeInsets.all(1),
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: kSwatch3,
-                      ),
+                      margin: const EdgeInsets.all(3.0),
                       child: GestureDetector(
                         onTap: () {
                           widget.setCategory(category);
                           Navigator.pop(context);
                         },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/logo.png',
-                              fit: BoxFit.cover,
-                              width: 46,
-                            ),
-                            vSpaceTiny,
-                            EgoText.caption(
-                              category.name.toUpperCase(),
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
+                        child: CategoryCard(
+                            categoryName: category.name.toUpperCase()),
                       ),
                     ))
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class CategoryCard extends StatelessWidget {
+  const CategoryCard({
+    Key? key,
+    required this.categoryName,
+    this.categoryIcon = 'assets/images/logo.png',
+  }) : super(key: key);
+
+  final String categoryName;
+  final String categoryIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(2),
+          gradient: const LinearGradient(
+              colors: [kSwatch0, kSwatch6],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topLeft),
+          boxShadow: [
+            BoxShadow(
+                color: kSwatch0.withOpacity(0.5),
+                blurRadius: 0.5,
+                spreadRadius: 1,
+                offset: const Offset(1, 1)),
+            BoxShadow(
+                color: kMediumGreyColor.withOpacity(0.6),
+                blurRadius: 0.5,
+                spreadRadius: 1,
+                offset: const Offset(-1, -1)),
+          ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(categoryIcon, fit: BoxFit.cover, width: 46),
+          vSpaceNormal,
+          EgoText.caption(categoryName, color: Colors.white),
         ],
       ),
     );
