@@ -10,6 +10,7 @@ import 'package:ego/screens/transaction_form.dart';
 import 'package:ego/widgets/transactions_list.dart';
 import 'package:ego/widgets/transaction_header.dart';
 import 'package:ego/services/transaction_storage.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class EgoHome extends StatefulWidget {
   EgoHome({Key? key}) : super(key: key);
@@ -110,25 +111,29 @@ class _EgoHomeState extends State<EgoHome> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      floatingActionButton: FloatingActionButton(
-          foregroundColor: kSwatch5,
-          backgroundColor: kPrimaryColor,
-          onPressed: () => _showTransactionModal(context),
-          child: const Icon(Icons.add, size: 24, color: Colors.white)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10,
-        color: kSwatch0,
-        child: SizedBox(
-          height: screenHeightPercent(context, percentage: 0.07),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: const [About()]),
-          ),
-        ),
+      bottomNavigationBar: CurvedNavigationBar(
+        index: 1,
+        color: kPrimaryColor,
+        backgroundColor: kSwatch6,
+        animationDuration: const Duration(milliseconds: 200),
+        height: screenHeightPercent(context, percentage: 0.07),
+        items: const [
+          Icon(Icons.home_rounded, color: Colors.white, size: 28),
+          Icon(Icons.add, color: Colors.white, size: 28),
+          Icon(Icons.info_outline, color: Colors.white, size: 28)
+        ],
+        onTap: (index) {
+          switch (index) {
+            case 1:
+              _showTransactionModal(context);
+              break;
+            case 2:
+              showDialog(
+                  context: context, builder: (_) => const AboutEgoDialog());
+              break;
+            default:
+          }
+        },
       ),
       body: Column(children: [
         Container(

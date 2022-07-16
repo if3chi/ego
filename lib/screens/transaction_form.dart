@@ -162,82 +162,84 @@ class _TransactionFormState extends State<TransactionForm> {
     setFormTexts();
     var iconColor = kSwatch5.withOpacity(0.40);
 
-    return Container(
-      padding: EdgeInsets.only(
-          top: 32,
-          right: 12,
-          left: 12,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 10),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(20),
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(
+            top: 32,
+            right: 12,
+            left: 12,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+          gradient: LinearGradient(
+              begin: Alignment.bottomRight,
+              end: Alignment.topLeft,
+              colors: [kSwatch0.withOpacity(0.9), kSwatch6]),
         ),
-        gradient: LinearGradient(
-            begin: Alignment.bottomRight,
-            end: Alignment.topLeft,
-            colors: [kSwatch0.withOpacity(0.9), kSwatch6]),
-      ),
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        EgoText.headline(formHeadlineText!),
-        vSpaceNormal,
-        vSpaceForm,
-        Form(
-            key: _formKey,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(children: [
-                    Input(
-                      icon: Icons.money,
-                      hintText: "00.00",
-                      iconColor: iconColor,
-                      inputValidator: amountValidator,
-                      editingController: _amountController,
-                      inputType: const TextInputType.numberWithOptions(
-                          decimal: true, signed: true),
-                    ),
-                    vSpaceForm,
-                    Input(
-                        hintText: "Enter a transaction Title",
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          EgoText.headline(formHeadlineText!),
+          vSpaceNormal,
+          vSpaceForm,
+          Form(
+              key: _formKey,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(children: [
+                      Input(
+                        icon: Icons.money,
+                        hintText: "00.00",
                         iconColor: iconColor,
-                        inputValidator: titleValidator,
-                        editingController: _titleController,
-                        inputType: TextInputType.text),
-                    vSpaceForm,
-                    FormButton(
-                        buttonAction: _openCategoryForm,
-                        text: _categoryName,
-                        color: kDarkGreyColor.withOpacity(0.6),
-                        outlined: true),
-                    _categoryIdErrorText
-                        ? EgoText.error("Kindly select a category")
-                        : shrikSpace,
-                    vSpaceForm,
-                    checkBoxes(),
-                    vSpaceTiny,
-                    vSpaceSmall,
-                    dateWidget(),
-                    vSpaceForm,
-                  ]),
-                  Container(
-                    margin: const EdgeInsets.all(4),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FormButton(
-                            color: kDarkGreyColor.withOpacity(0.6),
-                            outlined: true),
-                        hSpaceNormal,
-                        FormButton(
-                            text: formButtonText!,
-                            color: kSwatch5,
-                            buttonAction: submitData)
-                      ],
-                    ),
-                  )
-                ]))
-      ]),
+                        inputValidator: amountValidator,
+                        editingController: _amountController,
+                        inputType: const TextInputType.numberWithOptions(
+                            decimal: true, signed: true),
+                      ),
+                      vSpaceForm,
+                      Input(
+                          hintText: "Enter a transaction Title",
+                          iconColor: iconColor,
+                          inputValidator: titleValidator,
+                          editingController: _titleController,
+                          inputType: TextInputType.text),
+                      vSpaceForm,
+                      FormButton(
+                          buttonAction: _openCategoryForm,
+                          text: _categoryName,
+                          color: kDarkGreyColor.withOpacity(0.6),
+                          outlined: true),
+                      _categoryIdErrorText
+                          ? EgoText.error("Kindly select a category")
+                          : shrikSpace,
+                      vSpaceForm,
+                      checkBoxes(),
+                      vSpaceTiny,
+                      vSpaceSmall,
+                      dateWidget(),
+                      vSpaceForm,
+                    ]),
+                    Container(
+                      margin: const EdgeInsets.all(4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FormButton(
+                              color: kDarkGreyColor.withOpacity(0.6),
+                              outlined: true),
+                          hSpaceNormal,
+                          FormButton(
+                              text: formButtonText!,
+                              color: kSwatch5,
+                              buttonAction: submitData)
+                        ],
+                      ),
+                    )
+                  ]))
+        ]),
+      ),
     );
   }
 
