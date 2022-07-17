@@ -135,31 +135,33 @@ class _EgoHomeState extends State<EgoHome> {
           }
         },
       ),
-      body: Column(children: [
-        Container(
-          height: screenHeightPercent(context, percentage: 0.35),
-          padding: const EdgeInsets.symmetric(horizontal: 26),
-          child: Column(
-            children: [
-              TopBar(),
-              AnalyticsCard(
-                  totalIncome: totalIncome,
-                  totalExpenses: totalExpenses,
-                  total: totalIncome + totalExpenses,
-                  recentTransactions: _recentTransactions),
-            ],
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Container(
+            height: screenHeightPercent(context, percentage: 0.35),
+            padding: const EdgeInsets.symmetric(horizontal: 26),
+            child: Column(
+              children: [
+                TopBar(),
+                AnalyticsCard(
+                    totalIncome: totalIncome,
+                    totalExpenses: totalExpenses,
+                    total: totalIncome + totalExpenses,
+                    recentTransactions: _recentTransactions),
+              ],
+            ),
           ),
-        ),
-        const TransactionHeader(),
-        SizedBox(
-          height: screenHeightPercent(context, percentage: 0.493),
-          child: TransactionsList(
-            transactions: (_transactionsThisMonth.reversed).toList(),
-            updateAction: _showTransactionModal,
-            deleteAction: _deleteTransactionFn,
-          ),
-        )
-      ]),
+          const TransactionHeader(),
+          SizedBox(
+            height: screenHeightPercent(context, percentage: 0.493),
+            child: TransactionsList(
+              transactions: (_transactionsThisMonth.reversed).toList(),
+              updateAction: _showTransactionModal,
+              deleteAction: _deleteTransactionFn,
+            ),
+          )
+        ]),
+      ),
     );
   }
 }
