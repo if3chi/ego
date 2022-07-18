@@ -38,7 +38,7 @@ class Transaction {
         "date": date.toString()
       };
 
-  static bool isIncome(String type) => type == income;
+  static bool isIncome(String transactionType) => transactionType == income;
 
   static double totalIncome(List<Transaction> userTransactions) {
     double total = 0.0;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ego/util/constants.dart';
 import 'package:ego/util/app_colors.dart';
+import 'package:ego/widgets/ego_text.dart';
 import 'package:ego/models/transaction.dart';
 import 'package:ego/services/date_service.dart';
 
@@ -31,45 +32,27 @@ class TransactionCard extends StatelessWidget {
             flex: 2,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                txName,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1,
-                ),
-              ),
-              const SizedBox(
-                height: 3.0,
-              ),
-              Text(
+              EgoText.desc(txName, overflow: TextOverflow.ellipsis),
+              vSpaceMicro,
+              EgoText.alert(
                 DateService.dateFormat.format(txDate),
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade300,
-                ),
+                color: Colors.grey.shade300,
               )
             ]),
           ),
           Flexible(
+              child: Container(
+            margin: const EdgeInsets.only(right: 4.0),
             child: Column(
               children: type == Transaction.debt
                   ? [
                       AmountText(isIncome: isIncome, amount: amount),
                       vSpaceMicro,
-                      Text(
-                        type,
-                        style: TextStyle(
-                          color: kSwatch5.withOpacity(0.5),
-                          fontSize: 8,
-                        ),
-                      )
+                      EgoText.alert(type, color: kSwatch5.withOpacity(0.5))
                     ]
                   : [AmountText(isIncome: isIncome, amount: amount)],
             ),
-          )
+          ))
         ],
       ),
     );
@@ -88,14 +71,9 @@ class AmountText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      "${isIncome ? "+" : "-"}\$${DateService.numberFormat.format(amount)}",
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        color: isIncome ? kGreenColor : kRedColor,
-        fontSize: 12.5,
-        fontWeight: FontWeight.w600,
-      ),
-    );
+    return EgoText.alert(
+        "${isIncome ? "+" : "-"}\$${DateService.numberFormat.format(amount)}",
+        overflow: TextOverflow.ellipsis,
+        color: isIncome ? kGreenColor : kRedColor);
   }
 }

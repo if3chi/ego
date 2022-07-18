@@ -21,14 +21,20 @@ const TextStyle actionStyle = TextStyle(
   letterSpacing: 0.5,
 );
 
-const TextStyle alertStyle = TextStyle(
-  fontSize: 12,
-  fontWeight: FontWeight.w800,
+const TextStyle descStyle = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w900,
+  letterSpacing: 1,
 );
 
 const TextStyle captionStyle = TextStyle(
   fontSize: 13,
   fontWeight: FontWeight.w400,
+);
+
+const TextStyle alertStyle = TextStyle(
+  fontSize: 12,
+  fontWeight: FontWeight.w800,
 );
 
 const TextStyle errorStyle = TextStyle(
