@@ -1,5 +1,6 @@
 class Transaction {
   int id;
+  int categoryId;
   String title;
   double amount;
   String type;
@@ -10,9 +11,11 @@ class Transaction {
   static String get debt =>
       // ignore: todo
       "debt"; // TODO: add reminder/push notification for debts.
+  static String get update => "update";
 
   Transaction(
       {required this.id,
+      required this.categoryId,
       required this.title,
       required this.type,
       required this.amount,
@@ -20,6 +23,7 @@ class Transaction {
 
   Transaction.fromJson(Map<String, dynamic> json)
       : id = json["id"],
+        categoryId = json["categoryId"],
         title = json["title"],
         type = json["type"],
         amount = json["amount"],
@@ -27,13 +31,14 @@ class Transaction {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "categoryId": categoryId,
         "title": title,
         "type": type,
         "amount": amount,
         "date": date.toString()
       };
 
-  static bool isIncome(String type) => type == income;
+  static bool isIncome(String transactionType) => transactionType == income;
 
   static double totalIncome(List<Transaction> userTransactions) {
     double total = 0.0;
