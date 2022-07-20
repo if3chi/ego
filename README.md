@@ -1,6 +1,7 @@
 # Ego
 
-A simple expense tracker
+A simple expense tracker,
+Monitor your finances.
 
 ## Getting Started
 1. clone the project and run
