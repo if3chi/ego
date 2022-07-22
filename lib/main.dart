@@ -1,10 +1,17 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-
 import 'package:ego/util/constants.dart';
 import 'package:ego/util/app_colors.dart';
 import 'package:ego/screens/ego_home.dart';
 
-void main() => runApp(const EgoApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  return runApp(const EgoApp());
+}
 
 class EgoApp extends StatelessWidget {
   const EgoApp({Key? key}) : super(key: key);
