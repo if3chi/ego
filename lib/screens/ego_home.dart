@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
 import 'package:ego/screens/about.dart';
 import 'package:ego/widgets/top_bar.dart';
 import 'package:ego/util/ui_helpers.dart';
@@ -10,7 +12,6 @@ import 'package:ego/screens/transaction_form.dart';
 import 'package:ego/widgets/transactions_list.dart';
 import 'package:ego/widgets/transaction_header.dart';
 import 'package:ego/services/transaction_storage.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class EgoHome extends StatefulWidget {
   EgoHome({Key? key}) : super(key: key);

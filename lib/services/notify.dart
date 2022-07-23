@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ego/util/app_colors.dart';
-import 'package:ego/widgets/ego_text.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import 'package:ego/util/app_colors.dart';
+import 'package:ego/widgets/ego_text.dart';
 
 class Notify {
   static void show(

@@ -1,6 +1,8 @@
 import 'dart:math';
-import 'package:ego/util/styles.dart';
+
 import 'package:flutter/material.dart';
+
+import 'package:ego/util/styles.dart';
 import 'package:ego/util/constants.dart';
 import 'package:ego/services/notify.dart';
 import 'package:ego/util/app_colors.dart';
@@ -211,9 +213,8 @@ class _TransactionFormState extends State<TransactionForm> {
                           text: _categoryName,
                           color: kDarkGreyColor.withOpacity(0.6),
                           outlined: true),
-                      _categoryIdErrorText
-                          ? EgoText.error("Kindly select a category")
-                          : shrikSpace,
+                      if (_categoryIdErrorText)
+                        EgoText.error("Kindly select a category"),
                       vSpaceForm,
                       checkBoxes(),
                       vSpaceTiny,
@@ -271,9 +272,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 color: kSwatch2.withOpacity(0.2),
                 buttonAction: _openDatePicker)
           ]),
-      dateErrorText
-          ? EgoText.error("Choose a Date for this Transaction.")
-          : shrikSpace
+      if (dateErrorText) EgoText.error("Choose a Date for this Transaction.")
     ]);
   }
 
@@ -335,9 +334,8 @@ class _TransactionFormState extends State<TransactionForm> {
                 }),
           ]),
       vSpaceSmall,
-      typeErrorText
-          ? EgoText.error("The transaction type is required.", color: kRedColor)
-          : shrikSpace
+      if (typeErrorText)
+        EgoText.error("The transaction type is required.", color: kRedColor)
     ]);
   }
 

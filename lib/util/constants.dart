@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:ego/util/app_colors.dart';
 
 const appName = 'Ego';
@@ -14,7 +15,7 @@ const SizedBox vSpaceMedium = SizedBox(height: 24.0);
 const SizedBox vSpaceLarge = SizedBox(height: 32.0);
 const SizedBox vSpaceXLarge = SizedBox(height: 64.0);
 
-const SizedBox shrikSpace = SizedBox.shrink();
+const SizedBox shrinkSpace = SizedBox.shrink();
 
 List<BoxShadow> kBoxShadow = [
   BoxShadow(

@@ -1,5 +1,6 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:ego/util/constants.dart';
 import 'package:ego/util/app_colors.dart';
 import 'package:ego/models/transaction.dart';

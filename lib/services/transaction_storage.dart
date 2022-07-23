@@ -2,8 +2,10 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:ego/models/transaction.dart';
+
 import 'package:path_provider/path_provider.dart';
+
+import 'package:ego/models/transaction.dart';
 
 class TransactionStorage {
   Future<String> get _localPath async {
