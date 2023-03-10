@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ego/utilities/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:ego/util/constants.dart';
+import 'package:ego/util/app_colors.dart';
+import 'package:ego/services/date_service.dart';
 
 class NeuSummaryCard extends StatelessWidget {
   final double total;
@@ -18,24 +21,24 @@ class NeuSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color foreColor = isPositive ? kGreen : kRed;
+    Color foreColor = isPositive ? kGreenColor : kRedColor;
     Color bgColor = isPositive ? kBgGreen : kBgRed;
     final cardIcon = isPositive
         ? SvgPicture.asset(
             "assets/images/up_arrow.svg",
-            width: 14,
+            width: 16,
             color: foreColor,
             semanticsLabel: 'An up arrow',
           )
         : SvgPicture.asset(
             "assets/images/down_arrow.svg",
-            width: 14,
+            width: 16,
             color: foreColor,
             semanticsLabel: 'A down arrow',
           );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       width: 140,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
@@ -58,7 +61,8 @@ class NeuSummaryCard extends StatelessWidget {
                 // TODO: Add dynamic icon rotation based on transaction %tage.
                 turns: const AlwaysStoppedAnimation(20 / 180),
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(6.0),
+                  margin: const EdgeInsets.only(top: 6.0),
                   decoration: BoxDecoration(
                     color: bgColor,
                     shape: BoxShape.circle,
@@ -81,7 +85,7 @@ class NeuSummaryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                "₵ ${compactFromat.format(total)}",
+                "₵ ${DateService.compactFromat.format(total)}",
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),

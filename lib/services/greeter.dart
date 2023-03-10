@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class Greeter {
   static String timeOfDay() {
     var hour = DateTime.now().hour;
@@ -8,7 +10,8 @@ class Greeter {
     return 'Evening';
   }
 
-  static String hello() {
-    return "Good ${timeOfDay()}!";
+  static String hello(
+      {greetings = const ['Good', 'Awesome', 'Great', 'Beautiful']}) {
+    return "${greetings[Random().nextInt(greetings.length)]} ${timeOfDay()}!";
   }
 }

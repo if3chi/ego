@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:ego/util/app_colors.dart';
 import 'package:ego/services/greeter.dart';
-import 'package:ego/utilities/constants.dart';
 
 class TopBar extends StatelessWidget {
   TopBar({Key? key}) : super(key: key);
@@ -19,31 +20,22 @@ class TopBar extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "If3chi",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 24,
-                  letterSpacing: 2,
-                ),
-              ),
-              Text(
-                _goodDay,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    letterSpacing: 1,
-                    color: kSwatch5),
-              ),
+              const Text("Hello, If3chi",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 20,
+                      letterSpacing: 2)),
+              Text(_goodDay,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      letterSpacing: 1,
+                      color: kSwatch5))
             ],
           ),
           //
           const CircleAvatar(
-            radius: 28,
-            backgroundImage: AssetImage(
-              'assets/images/face.png',
-            ),
-          )
+              radius: 28, backgroundImage: AssetImage('assets/images/face.png'))
         ],
       ),
     );
